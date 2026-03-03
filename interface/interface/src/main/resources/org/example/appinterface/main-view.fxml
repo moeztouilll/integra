@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import java.net.URL?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.effect.*?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+
+<StackPane fx:id="rootStack" prefHeight="900.0" prefWidth="1400.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.appinterface.MainController">
+    <stylesheets>
+        <URL value="@style.css" />
+    </stylesheets>
+    
+    <!-- Main Content Layout -->
+    <HBox styleClass="main-container">
+        <!-- Sidebar -->
+        <VBox styleClass="sidebar">
+            <VBox styleClass="sidebar-logo-container">
+                <FontIcon iconLiteral="fth-zap" styleClass="sidebar-logo" />
+            </VBox>
+            
+            <Region VBox.vgrow="ALWAYS" />
+            
+            <VBox styleClass="nav-container">
+                <Button fx:id="navProducts" styleClass="nav-btn, active">
+                    <graphic>
+                        <FontIcon iconLiteral="fth-home" styleClass="nav-icon" />
+                    </graphic>
+                    <tooltip><Tooltip text="Products" /></tooltip>
+                </Button>
+                <Button fx:id="navHistory" onAction="#handleHistoryClick" styleClass="nav-btn">
+                    <graphic>
+                        <FontIcon iconLiteral="fth-clock" styleClass="nav-icon" />
+                    </graphic>
+                    <tooltip><Tooltip text="History" /></tooltip>
+                </Button>
+                <Button fx:id="navCart" onAction="#handleCartClick" styleClass="nav-btn">
+                    <graphic>
+                        <FontIcon iconLiteral="fth-shopping-cart" styleClass="nav-icon" />
+                    </graphic>
+                    <tooltip><Tooltip text="Cart" /></tooltip>
+                </Button>
+            </VBox>
+            
+            <Region VBox.vgrow="ALWAYS" />
+            
+            <VBox styleClass="nav-container">
+                <Button fx:id="navSettings" styleClass="nav-btn">
+                    <graphic>
+                        <FontIcon iconLiteral="fth-settings" styleClass="nav-icon" />
+                    </graphic>
+                    <tooltip><Tooltip text="Settings" /></tooltip>
+                </Button>
+            </VBox>
+        </VBox>
+
+        <!-- Product Grid Content -->
+        <VBox HBox.hgrow="ALWAYS" styleClass="content-area">
+            <HBox alignment="CENTER_LEFT" spacing="20">
+                <VBox spacing="5" HBox.hgrow="ALWAYS">
+                    <Label styleClass="title-text" text="Premium Interface" />
+                    <Label styleClass="subtitle-text" text="Welcome back, discover our latest digital assets." />
+                </VBox>
+                <HBox styleClass="cart-btn-container">
+                    <Button styleClass="nav-btn" onAction="#handleCartClick">
+                        <graphic>
+                            <FontIcon iconLiteral="fth-shopping-bag" styleClass="nav-icon" />
+                        </graphic>
+                    </Button>
+                    <Label fx:id="cartCountLabel" styleClass="cart-badge" text="0" />
+                </HBox>
+            </HBox>
+
+            <VBox spacing="30" VBox.vgrow="ALWAYS">
+                <padding><javafx.geometry.Insets top="40" bottom="0" left="0" right="0"/></padding>
+                
+               
+
+                <HBox fx:id="categoryContainer" styleClass="category-container" spacing="15" />
+
+                <StackPane VBox.vgrow="ALWAYS">
+                    <!-- Products Page -->
+                    <ScrollPane fx:id="productsPage" fitToWidth="true" styleClass="scroll-pane">
+                        <FlowPane fx:id="productGrid" hgap="30" vgap="40" styleClass="product-grid" />
+                    </ScrollPane>
+
+                    <!-- History Page -->
+                    <VBox fx:id="orderHistoryPage" spacing="30" styleClass="history-page" visible="false" managed="false">
+                        <ScrollPane fitToWidth="true" styleClass="scroll-pane" VBox.vgrow="ALWAYS">
+                            <VBox fx:id="ordersContainer" spacing="20" />
+                        </ScrollPane>
+                    </VBox>
+
+                    <!-- Cart Page -->
+                    <VBox fx:id="cartPage" spacing="30" styleClass="cart-page" visible="false" managed="false">
+                        <Label styleClass="title-text" text="Your Shopping Cart" />
+                        <VBox fx:id="cartItemsContainer" spacing="15" />
+                    </VBox>
+                </StackPane>
+            </VBox>
+        </VBox>
+    </HBox>
+
+    <!-- Product Details Overlay -->
+    <VBox fx:id="detailOverlay" styleClass="detail-overlay" visible="false">
+        <HBox styleClass="detail-card">
+            <!-- Left: Image Container -->
+            <VBox styleClass="detail-image-container">
+                <ImageView fx:id="detailImage" fitWidth="380.0" preserveRatio="true">
+                    <effect>
+                        <DropShadow color="rgba(0,0,0,0.3)" radius="20.0" />
+                    </effect>
+                </ImageView>
+            </VBox>
+            
+            <!-- Right: Content -->
+            <ScrollPane styleClass="detail-content-scroll" fitToWidth="true" HBox.hgrow="ALWAYS">
+                <VBox styleClass="detail-content">
+                    <HBox alignment="CENTER_LEFT" spacing="15">
+                        <VBox spacing="5" HBox.hgrow="ALWAYS">
+                            <Label fx:id="detailTitle" styleClass="detail-title" text="Product Title" />
+                            <Label fx:id="detailShortDesc" styleClass="detail-short-desc" text="Short Description" />
+                        </VBox>
+                        <Button styleClass="close-detail-btn" onAction="#hideProductDetails">
+                            <graphic>
+                                <FontIcon iconLiteral="fth-x" styleClass="nav-icon" />
+                            </graphic>
+                        </Button>
+                    </HBox>
+                    
+                    <HBox spacing="10">
+                        <Label fx:id="detailStatus" styleClass="detail-status-badge" text="STATUS" />
+                    </HBox>
+                    
+                    <Separator />
+                    
+                    <GridPane styleClass="detail-meta-grid">
+                        <columnConstraints>
+                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        </columnConstraints>
+                        
+                        <VBox styleClass="meta-item" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                            <Label styleClass="meta-label" text="PROJECT ID" />
+                            <Label fx:id="detailProjectId" styleClass="meta-value" text="#000" />
+                        </VBox>
+                        <VBox styleClass="meta-item" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                            <Label styleClass="meta-label" text="CREATOR ID" />
+                            <Label fx:id="detailEntrepreneurId" styleClass="meta-value" text="#000" />
+                        </VBox>
+                        <VBox styleClass="meta-item" GridPane.columnIndex="2" GridPane.rowIndex="0">
+                            <Label styleClass="meta-label" text="VIEWS" />
+                            <Label fx:id="detailViews" styleClass="meta-value" text="0" />
+                        </VBox>
+                        <VBox styleClass="meta-item" GridPane.columnIndex="0" GridPane.rowIndex="1">
+                            <Label styleClass="meta-label" text="SALES" />
+                            <Label fx:id="detailSales" styleClass="meta-value" text="0" />
+                        </VBox>
+                        <VBox styleClass="meta-item" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                            <Label styleClass="meta-label" text="CREATED" />
+                            <Label fx:id="detailCreated" styleClass="meta-value" text="2024-01-01" />
+                        </VBox>
+                    </GridPane>
+                    
+                    <TextFlow fx:id="detailFullDesc" />
+                    
+                    <Region VBox.vgrow="ALWAYS" />
+                    
+                    <HBox styleClass="detail-footer">
+                        <VBox styleClass="detail-price-box">
+                            <Label fx:id="detailCurrency" styleClass="detail-currency" text="USD" />
+                            <Label fx:id="detailPrice" styleClass="detail-price" text="0.00" />
+                        </VBox>
+                        <Region HBox.hgrow="ALWAYS" />
+                        <Button fx:id="buyButton" styleClass="buy-btn" text="Get Access Now" />
+                    </HBox>
+                </VBox>
+            </ScrollPane>
+        </HBox>
+    </VBox>
+    
+</StackPane>
