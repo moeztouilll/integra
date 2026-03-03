@@ -59,6 +59,12 @@
         </dependency>
 
         <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-swing</artifactId>
+            <version>17.0.2</version>
+        </dependency>
+
+        <dependency>
             <groupId>org.json</groupId>
             <artifactId>json</artifactId>
             <version>20230227</version>
@@ -81,6 +87,25 @@
             <groupId>org.kordamp.ikonli</groupId>
             <artifactId>ikonli-feather-pack</artifactId>
             <version>12.3.1</version>
+        </dependency>
+
+        <!-- QR Code Generation & Decoding -->
+        <dependency>
+            <groupId>com.google.zxing</groupId>
+            <artifactId>core</artifactId>
+            <version>3.5.3</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.zxing</groupId>
+            <artifactId>javase</artifactId>
+            <version>3.5.3</version>
+        </dependency>
+
+        <!-- Stripe Payments -->
+        <dependency>
+            <groupId>com.stripe</groupId>
+            <artifactId>stripe-java</artifactId>
+            <version>31.3.0</version>
         </dependency>
 
         <!-- OpenPDF for generating PDF documents -->

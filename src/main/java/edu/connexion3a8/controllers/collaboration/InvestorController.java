@@ -198,6 +198,15 @@ public class InvestorController implements Initializable {
         }
     }
 
+    @FXML
+    void handleProducts() {
+        try {
+            edu.connexion3a8.InvestiApp.showProductCatalog();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     // ─── Detail Overlay Logic ───────────────────────────────────────────────────
 
     private void showProjectDetails(Project p, Investment interaction) {

@@ -21,6 +21,9 @@
                     <Label fx:id="pageSubtitle" styleClass="subtitle-text" text="Manage your projects, evaluate offers via AI, and track progress." />
                 </VBox>
                 <Region HBox.hgrow="ALWAYS" />
+                <Button text="📦 Products" styleClass="nav-btn" onAction="#handleProducts">
+                    <tooltip><Tooltip text="Browse Catalog" /></tooltip>
+                </Button>
                 <Button text="🏠 Home" styleClass="nav-btn" onAction="#goHome">
                     <tooltip><Tooltip text="Back to Home" /></tooltip>
                 </Button>

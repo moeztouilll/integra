@@ -21,6 +21,9 @@
                     <Label fx:id="pageSubtitle" styleClass="subtitle-text" text="Find and analyze premium investments." />
                 </VBox>
                 <Region HBox.hgrow="ALWAYS" />
+                <Button text="📦 Products" styleClass="nav-btn" onAction="#handleProducts">
+                    <tooltip><Tooltip text="Browse Catalog" /></tooltip>
+                </Button>
                 <Button text="🏠 Home" styleClass="nav-btn" onAction="#goHome">
                     <tooltip><Tooltip text="Back to Home" /></tooltip>
                 </Button>

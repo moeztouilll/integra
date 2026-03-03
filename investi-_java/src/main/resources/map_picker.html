@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="leaflet.css" />
+    <script src="leaflet.js"></script>
+    <style>
+        #map {
+            margin: 0;
+            padding: 0;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: #e8edf2;
+        }
+
+        #hint {
+            position: fixed;
+            top: 18px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #fff;
+            padding: 9px 22px;
+            border-radius: 999px;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, .14);
+            font: 600 13px system-ui, sans-serif;
+            color: #1e293b;
+            white-space: nowrap;
+            z-index: 9999;
+            pointer-events: none;
+        }
+
+        #search-box {
+            position: fixed;
+            top: 18px;
+            left: 18px;
+            background: #fff;
+            padding: 5px;
+            border-radius: 8px;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, .14);
+            z-index: 9999;
+            display: flex;
+            gap: 5px;
+        }
+
+        #search-box input {
+            border: 1px solid #e2e8f0;
+            padding: 5px 10px;
+            border-radius: 4px;
+            outline: none;
+            font: 400 13px system-ui, sans-serif;
+        }
+
+        #search-box button {
+            background: #f1f5f9;
+            border: 1px solid #e2e8f0;
+            border-radius: 4px;
+            cursor: pointer;
+            padding: 5px 10px;
+            font-size: 14px;
+        }
+
+        #search-box button:hover {
+            background: #e2e8f0;
+        }
+
+        #confirmBtn {
+            background: #3b82f6 !important;
+            color: white !important;
+            font-weight: bold;
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="search-box">
+        <input type="text" id="searchInput" placeholder="Rechercher une adresse..." />
+        <button onclick="searchAddress()">🔍</button>
+        <button onclick="locateMe()" title="Ma position">📍</button>
+        <button id="confirmBtn" onclick="confirmLocation()">Valider ✓</button>
+    </div>
+    <div id="hint">Cliquez sur la carte pour choisir une adresse</div>
+    <div id="map"></div>
+    <script>
+        delete L.Icon.Default.prototype._getIconUrl;
+        L.Icon.Default.mergeOptions({
+            iconUrl: 'marker-icon.png',
+            iconRetinaUrl: 'marker-icon-2x.png',
+            shadowUrl: 'marker-shadow.png'
+        });
+        L.Browser.retina = false;
+
+        var map, pin;
+
+        function boot() {
+            if (map) return;
+            var mapDiv = document.getElementById('map');
+            mapDiv.style.width = window.innerWidth + 'px';
+            mapDiv.style.height = window.innerHeight + 'px';
+            var tileUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+
+            L.Browser.any3d = false;
+
+            map = L.map('map', {
+                center: [36.8065, 10.1815],
+                zoom: 13,
+                zoomControl: true,
+                attributionControl: false,
+                zoomAnimation: false,
+                fadeAnimation: false,
+                markerZoomAnimation: false
+            });
+            L.tileLayer(tileUrl, { maxZoom: 18, tileSize: 256, detectRetina: false }).addTo(map);
+            map.on('click', function (e) { placePin(e.latlng.lat, e.latlng.lng); });
+            setTimeout(function () { map.invalidateSize(false); }, 100);
+            setTimeout(function () { map.invalidateSize(false); }, 400);
+            setTimeout(function () { map.invalidateSize(false); }, 900);
+            document.getElementById('searchInput').addEventListener('keypress', function (e) {
+                if (e.key === 'Enter') searchAddress();
+            });
+        }
+
+        function placePin(lat, lng) {
+            if (pin) pin.setLatLng([lat, lng]);
+            else {
+                pin = L.marker([lat, lng], { draggable: true }).addTo(map);
+                pin.on('dragend', function () {
+                    var p = pin.getLatLng();
+                    updateHint(p.lat, p.lng);
+                });
+            }
+            document.getElementById('confirmBtn').style.display = 'block';
+            updateHint(lat, lng);
+        }
+
+        function updateHint(lat, lng) {
+            document.getElementById('hint').textContent = 'Identification...';
+            // Reverse geocode to show user what they selected
+            fetch('https://nominatim.openstreetmap.org/reverse?format=json&lat=' + lat + '&lon=' + lng)
+                .then(r => r.json())
+                .then(d => {
+                    var addr = d.display_name || (lat.toFixed(5) + ', ' + lng.toFixed(5));
+                    document.getElementById('hint').textContent = addr.substring(0, 55) + (addr.length > 55 ? "..." : "");
+                }).catch(e => {
+                    document.getElementById('hint').textContent = lat.toFixed(5) + ', ' + lng.toFixed(5);
+                });
+        }
+
+        function confirmLocation() {
+            if (!pin) return;
+            var lat = pin.getLatLng().lat;
+            var lng = pin.getLatLng().lng;
+            document.getElementById('confirmBtn').textContent = '...';
+            fetch('https://nominatim.openstreetmap.org/reverse?format=json&lat=' + lat + '&lon=' + lng)
+                .then(r => r.json())
+                .then(d => {
+                    var addr = d.display_name || (lat.toFixed(5) + ', ' + lng.toFixed(5));
+                    document.title = 'LOCATION:' + addr;
+                }).catch(e => {
+                    document.title = 'LOCATION:' + lat.toFixed(5) + ', ' + lng.toFixed(5);
+                });
+        }
+
+        function locateMe() {
+            document.getElementById('hint').textContent = 'Recherche via IP...';
+            fetch('https://get.geojs.io/v1/ip/geo.json')
+                .then(r => r.json())
+                .then(d => {
+                    if (d.latitude && d.longitude) {
+                        map.setView([d.latitude, d.longitude], 13);
+                        placePin(d.latitude, d.longitude);
+                    } else {
+                        document.getElementById('hint').textContent = 'Impossible de vous localiser.';
+                    }
+                })
+                .catch(e => {
+                    document.getElementById('hint').textContent = 'Erreur de localisation.';
+                });
+        }
+
+        function searchAddress() {
+            var query = document.getElementById('searchInput').value;
+            if (!query) return;
+            document.getElementById('hint').textContent = 'Recherche en cours...';
+            fetch('https://nominatim.openstreetmap.org/search?format=json&q=' + encodeURIComponent(query))
+                .then(r => r.json())
+                .then(d => {
+                    if (d && d.length > 0) {
+                        var lat = parseFloat(d[0].lat); var lon = parseFloat(d[0].lon);
+                        map.setView([lat, lon], 15);
+                        placePin(lat, lon);
+                    } else document.getElementById('hint').textContent = 'Introuvable';
+                }).catch(e => document.getElementById('hint').textContent = 'Erreur');
+        }
+
+        window.forceInit = boot;
+        window.invalidateMap = function () {
+            if (map) {
+                map.invalidateSize();
+            }
+        };
+        window.onload = function () { setTimeout(boot, 350); };
+    </script>
+</body>
+
+</html>

@@ -18,10 +18,14 @@ import java.sql.SQLException;
 
 public class HomeController {
 
-    @FXML private Button adminDashboardBtn;
-    @FXML private HBox kycBanner;
-    @FXML private HBox kycPendingBanner;
-    @FXML private Button uploadIdBtn;
+    @FXML
+    private Button adminDashboardBtn;
+    @FXML
+    private HBox kycBanner;
+    @FXML
+    private HBox kycPendingBanner;
+    @FXML
+    private Button uploadIdBtn;
 
     private User currentUser;
     private UserService userService = new UserService();
@@ -29,10 +33,19 @@ public class HomeController {
     public void setCurrentUser(User user) {
         this.currentUser = user;
 
-        // Show admin dashboard button only if user is admin
-        if (user != null && "admin".equals(user.getRole())) {
+        // Show dashboard button for admin, innovator, and investor
+        if (user != null && ("admin".equalsIgnoreCase(user.getRole()) ||
+                "innovator".equalsIgnoreCase(user.getRole()) ||
+                "investor".equalsIgnoreCase(user.getRole()))) {
             adminDashboardBtn.setVisible(true);
             adminDashboardBtn.setManaged(true);
+
+            // Update button text based on role if needed
+            if ("admin".equalsIgnoreCase(user.getRole())) {
+                adminDashboardBtn.setText("⚙ Admin Dashboard");
+            } else {
+                adminDashboardBtn.setText("⚙ My Dashboard");
+            }
         } else {
             adminDashboardBtn.setVisible(false);
             adminDashboardBtn.setManaged(false);
@@ -66,8 +79,7 @@ public class HomeController {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Select your ID image");
         fileChooser.getExtensionFilters().addAll(
-            new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg", "*.bmp")
-        );
+                new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg", "*.bmp"));
 
         File selectedFile = fileChooser.showOpenDialog(uploadIdBtn.getScene().getWindow());
         if (selectedFile != null) {
@@ -118,11 +130,12 @@ public class HomeController {
     @FXML
     private void handleAdminDashboard() {
         try {
-            InvestiApp.showAdminDashboard();
+            InvestiApp.showCollaborationModule(currentUser);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
     @FXML
     private void handleCourses() {
         try {

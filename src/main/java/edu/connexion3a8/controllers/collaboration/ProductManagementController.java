@@ -45,6 +45,8 @@ public class ProductManagementController implements Initializable {
     @FXML
     private TableColumn<Product, Integer> colStock;
     @FXML
+    private TableColumn<Product, Integer> colRemise;
+    @FXML
     private TableColumn<Product, Integer> colViews;
     @FXML
     private TableColumn<Product, Integer> colSales;
@@ -106,6 +108,7 @@ public class ProductManagementController implements Initializable {
         colCurrency.setCellValueFactory(new PropertyValueFactory<>("currency"));
         colStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
         colStock.setCellValueFactory(new PropertyValueFactory<>("stock"));
+        colRemise.setCellValueFactory(new PropertyValueFactory<>("remise"));
         colViews.setCellValueFactory(new PropertyValueFactory<>("viewsCount"));
         colSales.setCellValueFactory(new PropertyValueFactory<>("salesCount"));
 
@@ -426,5 +429,15 @@ public class ProductManagementController implements Initializable {
     /** Optional: allows passing current user explicitly from InvestiApp */
     public void setCurrentUser(User user) {
         InvestiApp.setCurrentUser(user);
+    }
+
+    @FXML
+    private void handleViewCatalog() {
+        try {
+            InvestiApp.showProductCatalog();
+        } catch (Exception e) {
+            e.printStackTrace();
+            showError("Could not load catalog: " + e.getMessage());
+        }
     }
 }

@@ -752,19 +752,15 @@ public class AdminDashboardController implements Initializable {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            showError("Error", "Failed to open Gamification", "Could not load gamification interface: " + e.getMessage());
+            showError("Error", "Failed to open Gamification",
+                    "Could not load gamification interface: " + e.getMessage());
         }
     }
 
     @FXML
     private void handleProducts() {
         try {
-            edu.connexion3a8.entities.User user = edu.connexion3a8.InvestiApp.getCurrentUser();
-            if (user != null && "admin".equalsIgnoreCase(user.getRole())) {
-                InvestiApp.showProductManagement();
-            } else {
-                showError("Access Denied", "Admin Only", "Only administrators can manage products.");
-            }
+            InvestiApp.showProductCatalog();
         } catch (Exception e) {
             e.printStackTrace();
             showError("Error", "Failed to open Products", "Could not load products interface: " + e.getMessage());

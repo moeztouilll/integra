@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="leaflet.css" />
+    <script src="leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet.heat/dist/leaflet-heat.js"></script>
+    <style>
+        html,
+        body,
+        #map {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background: #e8edf2;
+        }
+
+        #toolbar {
+            position: fixed;
+            top: 18px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #fff;
+            padding: 9px 22px;
+            border-radius: 999px;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, .14);
+            font: 600 13px system-ui, sans-serif;
+            color: #1e293b;
+            z-index: 9999;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .progress-text {
+            font-weight: bold;
+            color: #3b82f6;
+        }
+
+        #search-box {
+            position: fixed;
+            top: 18px;
+            left: 18px;
+            background: #fff;
+            padding: 5px;
+            border-radius: 8px;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, .14);
+            z-index: 9999;
+            display: flex;
+            gap: 5px;
+        }
+
+        #search-box input {
+            border: 1px solid #e2e8f0;
+            padding: 5px 10px;
+            border-radius: 4px;
+            outline: none;
+            font: 400 13px system-ui, sans-serif;
+        }
+
+        #search-box button {
+            background: #f1f5f9;
+            border: 1px solid #e2e8f0;
+            border-radius: 4px;
+            cursor: pointer;
+            padding: 5px 10px;
+            font-size: 14px;
+        }
+
+        #search-box button:hover {
+            background: #e2e8f0;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="toolbar">
+        <span id="status">Chargement de la carte...</span>
+    </div>
+
+    <div id="search-box">
+        <input type="text" id="searchInput" placeholder="Aller à une ville..." />
+        <button onclick="searchAddress()">🔍</button>
+        <button onclick="locateMe()" title="Ma position">📍</button>
+        <button id="toggleHeatmapBtn" onclick="toggleHeatmap()" title="Basculer vers Heatmap">🔥 Heatmap</button>
+    </div>
+
+    <div id="map"></div>
+    <script>
+        delete L.Icon.Default.prototype._getIconUrl;
+        L.Icon.Default.mergeOptions({
+            iconUrl: 'marker-icon.png',
+            iconRetinaUrl: 'marker-icon-2x.png',
+            shadowUrl: 'marker-shadow.png'
+        });
+
+        L.Browser.retina = false;
+
+        var map;
+        var markers = L.layerGroup();
+        var heatLayer;
+        var heatPoints = [];
+        var showHeatmap = false;
+
+        function toggleHeatmap() {
+            if (!heatLayer) return;
+            showHeatmap = !showHeatmap;
+            if (showHeatmap) {
+                map.removeLayer(markers);
+                map.addLayer(heatLayer);
+                document.getElementById('toggleHeatmapBtn').innerHTML = '📍 Marqueurs';
+            } else {
+                map.removeLayer(heatLayer);
+                map.addLayer(markers);
+                document.getElementById('toggleHeatmapBtn').innerHTML = '🔥 Heatmap';
+            }
+        }
+
+        function locateMe() {
+            document.getElementById('status').textContent = 'Position via IP recherchée...';
+            fetch('https://get.geojs.io/v1/ip/geo.json')
+                .then(r => r.json())
+                .then(d => {
+                    if (d.latitude && d.longitude) {
+                        map.setView([d.latitude, d.longitude], 12);
+                        document.getElementById('status').textContent = 'Position trouvée';
+                    } else {
+                        document.getElementById('status').textContent = 'Impossible de vous localiser.';
+                    }
+                })
+                .catch(e => {
+                    document.getElementById('status').textContent = 'Erreur de localisation.';
+                });
+        }
+
+        function searchAddress() {
+            var query = document.getElementById('searchInput').value;
+            if (!query) return;
+            document.getElementById('status').textContent = 'Recherche en cours...';
+            fetch('https://nominatim.openstreetmap.org/search?format=json&q=' + encodeURIComponent(query))
+                .then(r => r.json())
+                .then(d => {
+                    if (d && d.length > 0) {
+                        var lat = parseFloat(d[0].lat); var lon = parseFloat(d[0].lon);
+                        map.setView([lat, lon], 12);
+                        document.getElementById('status').textContent = 'Terminé';
+                    } else document.getElementById('status').textContent = 'Introuvable';
+                }).catch(e => document.getElementById('status').textContent = 'Erreur: ' + e);
+        }
+
+        function boot() {
+            if (map) return;
+
+            // Critical fix for JavaFX WebView tile tearing / overlap:
+            L.Browser.any3d = false;
+
+            var tileUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+            map = L.map('map', {
+                center: [36.8065, 10.1815],
+                zoom: 6,
+                zoomControl: true,
+                attributionControl: false,
+                zoomAnimation: false,
+                fadeAnimation: false,
+                markerZoomAnimation: false
+            });
+            L.tileLayer(tileUrl, { maxZoom: 18, tileSize: 256, detectRetina: false }).addTo(map);
+            markers.addTo(map);
+
+            heatLayer = L.heatLayer([], { radius: 25, blur: 15, maxZoom: 14 });
+
+            map.on('locationfound', function (e) {
+                map.setView(e.latlng, 14);
+                document.getElementById('status').textContent = 'Position trouvée';
+            });
+
+            document.getElementById('searchInput').addEventListener('keypress', function (e) {
+                if (e.key === 'Enter') searchAddress();
+            });
+
+            setTimeout(function () { map.invalidateSize(); }, 400);
+        }
+
+        function loadSales(salesJson) {
+            boot();
+            var sales = [];
+            try {
+                sales = JSON.parse(salesJson);
+            } catch (e) {
+                document.getElementById('status').textContent = "Erreur de chargement JSON.";
+                return;
+            }
+
+            var validSales = sales.filter(s => s.address && s.address.trim().length > 3);
+            if (validSales.length === 0) {
+                document.getElementById('status').textContent = "Aucune adresse valide à placer.";
+                return;
+            }
+
+            document.getElementById('status').innerHTML = "Géocodage... <span class='progress-text'>0/" + validSales.length + "</span>";
+
+            var i = 0;
+            var bounds = L.latLngBounds();
+
+            function geocodeNext() {
+                if (i >= validSales.length) {
+                    document.getElementById('status').textContent = validSales.length + " ventes mappées.";
+                    heatLayer.setLatLngs(heatPoints);
+                    if (bounds.isValid()) map.fitBounds(bounds, { padding: [50, 50] });
+                    return;
+                }
+
+                var s = validSales[i];
+                var query = s.address;
+
+                fetch('https://nominatim.openstreetmap.org/search?format=json&limit=1&q=' + encodeURIComponent(query))
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data && data.length > 0) {
+                            var lat = parseFloat(data[0].lat);
+                            var lon = parseFloat(data[0].lon);
+                            var popupContent = "<b>" + s.ref + "</b><br/>Montant: " + s.amount + " " + s.currency +
+                                "<br/>Statut: " + s.status + "<br/><small>" + s.address + "</small>";
+
+                            var marker = L.marker([lat, lon]).bindPopup(popupContent);
+                            markers.addLayer(marker);
+                            heatPoints.push([lat, lon, 1]); // Add to heatmap
+                            bounds.extend([lat, lon]);
+                        }
+                    })
+                    .catch(e => console.error(e))
+                    .finally(() => {
+                        i++;
+                        document.getElementById('status').innerHTML = "Géocodage... <span class='progress-text'>" + i + "/" + validSales.length + "</span>";
+                        setTimeout(geocodeNext, 1200);   // Nominatim 1 request / sec rule
+                    });
+            }
+
+            geocodeNext();
+        }
+
+        window.forceInit = boot;
+        window.invalidateMap = function () {
+            if (map) {
+                map.invalidateSize();
+            }
+        };
+        window.onload = function () { setTimeout(boot, 350); };
+    </script>
+</body>
+
+</html>

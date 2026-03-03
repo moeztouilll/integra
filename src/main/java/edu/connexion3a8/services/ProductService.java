@@ -21,20 +21,44 @@ public class ProductService {
         return MyConnection.getInstance().getCnx();
     }
 
-    /**
-     * Create a new product (Admin only)
-     */
-    public int create(Product product, User currentUser) throws SQLException {
-        if (!isAdmin(currentUser)) {
-            throw new SecurityException("Only administrators can create products");
+    private String detectTableName() throws SQLException {
+        String tableName = "`product`";
+        try (Connection conn = getConnection()) {
+            ResultSet trs = conn.getMetaData().getTables(null, null, "%", new String[] { "TABLE" });
+            boolean productExists = false;
+            boolean produitExists = false;
+            while (trs.next()) {
+                String t = trs.getString("TABLE_NAME");
+                if ("product".equalsIgnoreCase(t))
+                    productExists = true;
+                if ("produit".equalsIgnoreCase(t))
+                    produitExists = true;
+            }
+            if (!productExists && produitExists) {
+                tableName = "`produit`";
+            }
+            trs.close();
         }
+        return tableName;
+    }
 
-        String sql = "INSERT INTO product (name, description, price, currency, is_digital, download_url, " +
-                     "entrepreneur_id, category, status, stock, remise) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        
+    /**
+     * Create a new product
+     */
+    public int create(Product product, User user) throws SQLException, SecurityException {
+        if (user == null
+                || (!"admin".equalsIgnoreCase(user.getRole()) && !"entrepreneur".equalsIgnoreCase(user.getRole())
+                        && !"innovator".equalsIgnoreCase(user.getRole()))) {
+            throw new SecurityException("Only admins, entrepreneurs, and innovators can create products.");
+        }
+        product.setEntrepreneurId(user.getId());
+        String tableName = detectTableName();
+        String sql = "INSERT INTO " + tableName + " (name, description, price, currency, is_digital, download_url, " +
+                "entrepreneur_id, category, status, stock, remise) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
         try (Connection conn = getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-            
+                PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+
             ps.setString(1, product.getName());
             ps.setString(2, product.getDescription());
             ps.setDouble(3, product.getPrice());
@@ -57,20 +81,22 @@ public class ProductService {
     }
 
     /**
-     * Update an existing product (Admin only)
+     * Update an existing product
      */
-    public void update(Product product, User currentUser) throws SQLException {
-        if (!isAdmin(currentUser)) {
-            throw new SecurityException("Only administrators can update products");
+    public void update(Product product, User user) throws SQLException, SecurityException {
+        if (!isAdmin(user) && !isOwner(product, user)) {
+            throw new SecurityException("Permission denied. You must be an admin or the product owner.");
         }
 
-        String sql = "UPDATE product SET name = ?, description = ?, price = ?, currency = ?, is_digital = ?, " +
-                     "download_url = ?, entrepreneur_id = ?, category = ?, status = ?, stock = ?, remise = ?, " +
-                     "updated_at = CURRENT_TIMESTAMP WHERE id = ?";
-        
+        String tableName = detectTableName();
+        String sql = "UPDATE " + tableName + " SET name = ?, description = ?, price = ?, currency = ?, is_digital = ?, "
+                +
+                "download_url = ?, entrepreneur_id = ?, category = ?, status = ?, stock = ?, remise = ?, " +
+                "updated_at = CURRENT_TIMESTAMP WHERE id = ?";
+
         try (Connection conn = getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
-            
+                PreparedStatement ps = conn.prepareStatement(sql)) {
+
             ps.setString(1, product.getName());
             ps.setString(2, product.getDescription());
             ps.setDouble(3, product.getPrice());
@@ -89,17 +115,37 @@ public class ProductService {
     }
 
     /**
-     * Delete a product (Admin only)
+     * Delete a product
      */
-    public void delete(long id, User currentUser) throws SQLException {
-        if (!isAdmin(currentUser)) {
-            throw new SecurityException("Only administrators can delete products");
+    public void delete(long id, User user) throws SQLException, SecurityException {
+        Product p = getProductById(id);
+        if (p == null)
+            return;
+
+        if (!isAdmin(user) && !isOwner(p, user)) {
+            throw new SecurityException("Permission denied. You must be an admin or the product owner.");
         }
 
-        String sql = "DELETE FROM product WHERE id = ?";
+        String tableName = detectTableName();
+        String sql = "DELETE FROM " + tableName + " WHERE id = ?";
         try (Connection conn = getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+                PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setLong(1, id);
+            ps.executeUpdate();
+        }
+    }
+
+    /**
+     * Decrement product stock and increment sales count (System use)
+     * No role-based checks because any user can buy a product
+     */
+    public void decrementStock(long productId) throws SQLException {
+        String tableName = detectTableName();
+        String sql = "UPDATE " + tableName
+                + " SET stock = GREATEST(0, stock - 1), sales_count = sales_count + 1 WHERE id = ?";
+        try (Connection conn = getConnection();
+                PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setLong(1, productId);
             ps.executeUpdate();
         }
     }
@@ -108,17 +154,49 @@ public class ProductService {
      * Get all products (accessible to all users)
      */
     public List<Product> getAllProducts() throws SQLException {
-        String sql = "SELECT * FROM product ORDER BY created_at DESC";
         List<Product> products = new ArrayList<>();
-        
+        String tableName = "`product`"; // Added backticks for safety
+
+        // Debug and find the correct table
+        try (Connection conn = getConnection()) {
+            ResultSet trs = conn.getMetaData().getTables(null, null, "%", new String[] { "TABLE" });
+            System.out.println("--- DB Check ---");
+            boolean productExists = false;
+            boolean produitExists = false;
+            while (trs.next()) {
+                String t = trs.getString("TABLE_NAME");
+                System.out.println("Found table: " + t);
+                if ("product".equalsIgnoreCase(t))
+                    productExists = true;
+                if ("produit".equalsIgnoreCase(t))
+                    produitExists = true;
+            }
+            if (!productExists && produitExists) {
+                tableName = "`produit`";
+                System.out.println("Using alternative table: produit");
+            }
+
+            // Inspect columns of selected table
+            System.out.println("Inspecting columns of " + tableName);
+            try (ResultSet crs = conn.getMetaData().getColumns(null, null, tableName.replace("`", ""), "%")) {
+                while (crs.next()) {
+                    System.out.println(
+                            " - Column: " + crs.getString("COLUMN_NAME") + " (" + crs.getString("TYPE_NAME") + ")");
+                }
+            }
+            trs.close();
+        }
+
+        String sql = "SELECT * FROM " + tableName + " ORDER BY id DESC"; // Use id for safety
         try (Connection conn = getConnection();
-             Statement statement = conn.createStatement();
-             ResultSet rs = statement.executeQuery(sql)) {
-            
+                Statement statement = conn.createStatement();
+                ResultSet rs = statement.executeQuery(sql)) {
+
             while (rs.next()) {
                 products.add(mapResultSetToProduct(rs));
             }
         }
+        System.out.println("Loaded " + products.size() + " products from " + tableName);
         return products;
     }
 
@@ -126,13 +204,14 @@ public class ProductService {
      * Get published products only (for public viewing)
      */
     public List<Product> getPublishedProducts() throws SQLException {
-        String sql = "SELECT * FROM product WHERE status = 'published' ORDER BY created_at DESC";
+        String tableName = detectTableName();
+        String sql = "SELECT * FROM " + tableName + " WHERE status = 'published' ORDER BY created_at DESC";
         List<Product> products = new ArrayList<>();
-        
+
         try (Connection conn = getConnection();
-             Statement statement = conn.createStatement();
-             ResultSet rs = statement.executeQuery(sql)) {
-            
+                Statement statement = conn.createStatement();
+                ResultSet rs = statement.executeQuery(sql)) {
+
             while (rs.next()) {
                 products.add(mapResultSetToProduct(rs));
             }
@@ -144,14 +223,15 @@ public class ProductService {
      * Get product by ID
      */
     public Product getProductById(long id) throws SQLException {
-        String sql = "SELECT * FROM product WHERE id = ?";
-        
+        String tableName = detectTableName();
+        String sql = "SELECT * FROM " + tableName + " WHERE id = ?";
+
         try (Connection conn = getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
-            
+                PreparedStatement ps = conn.prepareStatement(sql)) {
+
             ps.setLong(1, id);
             ResultSet rs = ps.executeQuery();
-            
+
             if (rs.next()) {
                 return mapResultSetToProduct(rs);
             }
@@ -163,18 +243,19 @@ public class ProductService {
      * Search products by name or category
      */
     public List<Product> searchProducts(String keyword) throws SQLException {
-        String sql = "SELECT * FROM product WHERE (name LIKE ? OR category LIKE ? OR description LIKE ?) " +
-                     "AND status = 'published' ORDER BY created_at DESC";
+        String tableName = detectTableName();
+        String sql = "SELECT * FROM " + tableName + " WHERE (name LIKE ? OR category LIKE ? OR description LIKE ?) " +
+                "AND status = 'published' ORDER BY id DESC";
         List<Product> products = new ArrayList<>();
-        
+
         try (Connection conn = getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
-            
-            String searchPattern = "%" + keyword + "%";
-            ps.setString(1, searchPattern);
-            ps.setString(2, searchPattern);
-            ps.setString(3, searchPattern);
-            
+                PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            String pattern = "%" + keyword + "%";
+            ps.setString(1, pattern);
+            ps.setString(2, pattern);
+            ps.setString(3, pattern);
+
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 products.add(mapResultSetToProduct(rs));
@@ -189,7 +270,7 @@ public class ProductService {
     public void incrementViewsCount(long id) throws SQLException {
         String sql = "UPDATE product SET views_count = views_count + 1 WHERE id = ?";
         try (Connection conn = getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+                PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setLong(1, id);
             ps.executeUpdate();
         }
@@ -201,7 +282,7 @@ public class ProductService {
     public void incrementSalesCount(long id) throws SQLException {
         String sql = "UPDATE product SET sales_count = sales_count + 1 WHERE id = ?";
         try (Connection conn = getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+                PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setLong(1, id);
             ps.executeUpdate();
         }
@@ -212,24 +293,23 @@ public class ProductService {
      */
     public ProductStats getProductStats() throws SQLException {
         String sql = "SELECT COUNT(*) as total, " +
-                     "SUM(CASE WHEN status = 'published' THEN 1 ELSE 0 END) as published, " +
-                     "SUM(CASE WHEN status = 'draft' THEN 1 ELSE 0 END) as draft, " +
-                     "SUM(views_count) as total_views, " +
-                     "SUM(sales_count) as total_sales " +
-                     "FROM product";
-        
+                "SUM(CASE WHEN status = 'published' THEN 1 ELSE 0 END) as published, " +
+                "SUM(CASE WHEN status = 'draft' THEN 1 ELSE 0 END) as draft, " +
+                "SUM(views_count) as total_views, " +
+                "SUM(sales_count) as total_sales " +
+                "FROM product";
+
         try (Connection conn = getConnection();
-             Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery(sql)) {
-            
+                Statement stmt = conn.createStatement();
+                ResultSet rs = stmt.executeQuery(sql)) {
+
             if (rs.next()) {
                 return new ProductStats(
-                    rs.getInt("total"),
-                    rs.getInt("published"),
-                    rs.getInt("draft"),
-                    rs.getInt("total_views"),
-                    rs.getInt("total_sales")
-                );
+                        rs.getInt("total"),
+                        rs.getInt("published"),
+                        rs.getInt("draft"),
+                        rs.getInt("total_views"),
+                        rs.getInt("total_sales"));
             }
         }
         return new ProductStats(0, 0, 0, 0, 0);
@@ -261,6 +341,10 @@ public class ProductService {
         return user != null && "admin".equalsIgnoreCase(user.getRole());
     }
 
+    private boolean isOwner(Product product, User user) {
+        return user != null && product != null && user.getId().equals(product.getEntrepreneurId());
+    }
+
     /**
      * Inner class for product statistics
      */
@@ -279,10 +363,24 @@ public class ProductService {
             this.totalSales = totalSales;
         }
 
-        public int getTotal() { return total; }
-        public int getPublished() { return published; }
-        public int getDraft() { return draft; }
-        public int getTotalViews() { return totalViews; }
-        public int getTotalSales() { return totalSales; }
+        public int getTotal() {
+            return total;
+        }
+
+        public int getPublished() {
+            return published;
+        }
+
+        public int getDraft() {
+            return draft;
+        }
+
+        public int getTotalViews() {
+            return totalViews;
+        }
+
+        public int getTotalSales() {
+            return totalSales;
+        }
     }
 }

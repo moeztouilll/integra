@@ -245,6 +245,15 @@ public class EntrepreneurController implements Initializable {
         }
     }
 
+    @FXML
+    void handleProducts() {
+        try {
+            edu.connexion3a8.InvestiApp.showProductCatalog();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     // ─── Data & Projects Rendering ──────────────────────────────────────────────
 
     @FXML

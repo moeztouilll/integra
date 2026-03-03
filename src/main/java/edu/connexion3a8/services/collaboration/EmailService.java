@@ -263,4 +263,47 @@ public class EmailService {
                                                 + "</strong> has been marked as <strong>COMPLETED</strong>. "
                                                 + "<br><br>This contributes to the overall progress of your investment.");
         }
+
+        /**
+         * Sends a notification to all users (except sender and admin) about a new
+         * discount.
+         */
+        public static void sendDiscountNotification(edu.connexion3a8.entities.Product product,
+                        edu.connexion3a8.entities.User sender) {
+                if (product.getRemise() <= 0)
+                        return;
+
+                try {
+                        edu.connexion3a8.services.UserService userService = new edu.connexion3a8.services.UserService();
+                        java.util.List<edu.connexion3a8.entities.User> allUsers = userService.getAllUsers();
+
+                        for (edu.connexion3a8.entities.User user : allUsers) {
+                                // Do not send to the person who made the discount or Admin
+                                if (!user.getId().equals(sender.getId()) && !"admin".equalsIgnoreCase(user.getRole())) {
+                                        sendDiscountEmailTo(user.getEmail(), product, sender);
+                                }
+                        }
+                } catch (Exception e) {
+                        System.err.println("[EmailService] Failed to load users for discount notification: "
+                                        + e.getMessage());
+                }
+        }
+
+        private static void sendDiscountEmailTo(String targetEmail, edu.connexion3a8.entities.Product product,
+                        edu.connexion3a8.entities.User sender) {
+                String subject = "🔥 Nouvelle Remise sur : " + product.getName();
+                String body = "Bonjour,<br><br>" +
+                                "<strong>" + sender.getName()
+                                + "</strong> a appliqué une remise exceptionnelle de <strong>" + product.getRemise()
+                                + "%</strong> sur le produit <strong>'" + product.getName() + "'</strong>.<br>" +
+                                "L'ancien prix était de " + String.format("%.2f", product.getPrice()) + " "
+                                + product.getCurrency() + ".<br>" +
+                                "Le nouveau prix est de : <strong>" + String.format("%.2f", product.getFinalPrice())
+                                + " " + product.getCurrency()
+                                + "</strong><br><br>" +
+                                "Ne manquez pas cette occasion !<br>" +
+                                "L'équipe Investi.";
+
+                send(targetEmail, subject, body);
+        }
 }

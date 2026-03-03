@@ -5,13 +5,36 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class MyConnection {
-    private String url = "jdbc:mysql://localhost:3306/3a8";
-    private String login = "root";
-    private String pwd = "";
+    private String url;
+    private String login;
+    private String pwd;
     private Connection cnx;
     public static MyConnection instance;
 
     private MyConnection() {
+        // Load from config
+        java.util.Properties props = new java.util.Properties();
+        try (java.io.InputStream input = getClass().getResourceAsStream("/config.properties")) {
+            if (input != null) {
+                props.load(input);
+                this.url = props.getProperty("db.url", "jdbc:mysql://localhost:3306/3a8");
+                this.login = props.getProperty("db.user", "root");
+                this.pwd = props.getProperty("db.password", "");
+                System.out.println("Loaded DB config: " + this.url);
+            } else {
+                // Fallback
+                this.url = "jdbc:mysql://localhost:3306/3a8";
+                this.login = "root";
+                this.pwd = "";
+                System.out.println("No config.properties found, using default 3a8");
+            }
+        } catch (java.io.IOException ex) {
+            ex.printStackTrace();
+            this.url = "jdbc:mysql://localhost:3306/3a8";
+            this.login = "root";
+            this.pwd = "";
+        }
+
         try {
             cnx = DriverManager.getConnection(url, login, pwd);
             System.out.println("Connexion établie!");

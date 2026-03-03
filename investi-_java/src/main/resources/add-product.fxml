@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+<?import javafx.geometry.Insets?>
+
+<VBox styleClass="form-page" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AddProductController">
+    <stylesheets>
+        <URL value="@style.css" />
+    </stylesheets>
+
+    
+
+    <StackPane alignment="TOP_CENTER" VBox.vgrow="ALWAYS">
+        <VBox alignment="TOP_CENTER" maxWidth="900" spacing="20" styleClass="form-container">
+            <padding>
+                <Insets top="0" right="60" bottom="20" left="60" />
+            </padding>
+
+            <Label fx:id="formTitle" styleClass="title-text" text="Create New Product" />
+
+            <GridPane hgap="30" vgap="15">
+                <columnConstraints>
+                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                </columnConstraints>
+
+                <!-- Name -->
+                <VBox spacing="5" GridPane.columnIndex="0" GridPane.rowIndex="0" GridPane.columnSpan="2">
+                    <HBox spacing="10" alignment="CENTER_LEFT">
+                        <Label styleClass="form-label" text="Product Name" />
+                        <Button text="✨ AI Title" onAction="#handleGenerateTitle" styleClass="secondary-btn" style="-fx-padding: 2 8; -fx-font-size: 11px; -fx-cursor: hand;" />
+                    </HBox>
+                    <TextField fx:id="nameField" promptText="e.g. Premium Analytics Dashboard" styleClass="form-input" />
+                    <Label fx:id="nameError" styleClass="error-text" visible="false" managed="false" />
+                </VBox>
+
+
+
+                <VBox spacing="5" GridPane.columnIndex="0" GridPane.rowIndex="2" GridPane.columnSpan="2">
+                    <HBox spacing="10" alignment="CENTER_LEFT">
+                        <Label styleClass="form-label" text="Full Description" />
+                        <Button text="✨ Generate from Image" onAction="#handleGenerateDescription" styleClass="secondary-btn" style="-fx-padding: 2 8; -fx-font-size: 11px; -fx-cursor: hand;" />
+                    </HBox>
+                    <TextArea fx:id="fullDescField" prefHeight="80" promptText="Detailed information about the product..." styleClass="form-input, text-area" wrapText="true" />
+                </VBox>
+
+                <!-- Price & Currency -->
+                <VBox spacing="5" GridPane.columnIndex="0" GridPane.rowIndex="3">
+                    <Label styleClass="form-label" text="Price" />
+                    <TextField fx:id="priceField" promptText="0.00" styleClass="form-input" />
+                    <Label fx:id="priceError" styleClass="error-text" visible="false" managed="false" />
+                </VBox>
+
+                <VBox spacing="5" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                    <Label styleClass="form-label" text="Currency" />
+                    <ComboBox fx:id="currencyCombo" maxWidth="Infinity" styleClass="form-input" />
+                </VBox>
+
+                <!-- Status & Category -->
+                <VBox spacing="5" GridPane.columnIndex="0" GridPane.rowIndex="4">
+                    <Label styleClass="form-label" text="Status" />
+                    <ComboBox fx:id="statusCombo" maxWidth="Infinity" styleClass="form-input" />
+                </VBox>
+
+                <VBox spacing="5" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                    <Label styleClass="form-label" text="Category" />
+                    <HBox spacing="10">
+                        <ComboBox fx:id="categoryCombo" editable="true" maxWidth="Infinity" promptText="Select or type category..." styleClass="form-input" HBox.hgrow="ALWAYS" />
+                        <Button onAction="#handleDetectCategory" styleClass="secondary-btn" text="✨ Detect" style="-fx-padding: 6 12;" />
+                    </HBox>
+                </VBox>
+
+                <!-- Product Image URL (downloadUrl) & Import -->
+                <VBox spacing="5" GridPane.columnIndex="0" GridPane.rowIndex="5" GridPane.columnSpan="2">
+                    <Label styleClass="form-label" text="Product Image (URL or Local)" />
+                    <HBox spacing="10">
+                        <TextField fx:id="downloadUrlField" promptText="https://example.com/image.jpg" styleClass="form-input" HBox.hgrow="ALWAYS" />
+                        <Button onAction="#handleBrowseImage" styleClass="secondary-btn" text="Import Image">
+                            <graphic>
+                                <FontIcon iconLiteral="fth-image" styleClass="nav-icon" />
+                            </graphic>
+                        </Button>
+                    </HBox>
+                </VBox>
+
+
+
+                <!-- Checkbox -->
+                <HBox alignment="CENTER_LEFT" spacing="10" GridPane.columnIndex="0" GridPane.rowIndex="6">
+                    <CheckBox fx:id="digitalCheck" selected="true" styleClass="form-checkbox" text="This is a digital product" />
+                </HBox>
+
+                <VBox spacing="5" GridPane.columnIndex="1" GridPane.rowIndex="6">
+                    <Label styleClass="form-label" text="Initial Stock" />
+                    <TextField fx:id="stockField" promptText="0" styleClass="form-input" />
+                </VBox>
+            </GridPane>
+
+            <HBox alignment="CENTER_RIGHT" spacing="15" styleClass="form-actions">
+                <Button onAction="#handleCancel" styleClass="secondary-btn" text="Cancel" />
+                <Button fx:id="saveBtn" onAction="#handleSave" styleClass="primary-btn" text="Create Product" />
+            </HBox>
+        </VBox>
+    </StackPane>
+</VBox>
