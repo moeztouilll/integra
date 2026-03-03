@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<ScrollPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="edu.connexion3a8.controllers.gamification.CourseContentController"
+            fitToWidth="true"
+            style="-fx-background-color: transparent;"
+            vbarPolicy="AS_NEEDED"
+            hbarPolicy="NEVER">
+
+<VBox styleClass="root-container"
+      stylesheets="@courseContent.css"
+      spacing="20">
+
+    <padding>
+        <Insets top="32" right="36" bottom="32" left="36"/>
+    </padding>
+
+    <!-- Header -->
+    <HBox styleClass="glass-header" alignment="CENTER_LEFT" spacing="20">
+        <padding>
+            <Insets top="20" right="30" bottom="20" left="30"/>
+        </padding>
+        
+        <Label fx:id="courseTitleLabel" text="Course Content" styleClass="page-title" HBox.hgrow="ALWAYS"/>
+        
+        <Button fx:id="nightModeToggle" text="🌙 Night Mode" onAction="#toggleNightMode" styleClass="btn, btn-secondary"/>
+        <Button text="← Back to Catalog" onAction="#handleBack" styleClass="btn, btn-dark"/>
+    </HBox>
+
+    <Separator styleClass="styled-separator"/>
+
+    <!-- Course Info Summary -->
+    <HBox spacing="20" alignment="CENTER_LEFT" styleClass="info-summary-box">
+        <padding>
+            <Insets top="15" right="20" bottom="15" left="20"/>
+        </padding>
+        
+        <Label fx:id="difficultyLabel" text="📊 Beginner" styleClass="info-badge"/>
+        <Label fx:id="pointsLabel" text="⭐ 100 pts" styleClass="info-badge"/>
+        <Label fx:id="durationLabel" text="⏱️ 60 min" styleClass="info-badge"/>
+        <Label fx:id="categoryLabel" text="📂 Programming" styleClass="info-badge"/>
+    </HBox>
+
+    <!-- Main Content Area -->
+    <VBox spacing="25" VBox.vgrow="ALWAYS">
+        
+        <!-- Course Media Section -->
+        <VBox spacing="15" styleClass="content-section">
+            <Label text="📺 Course Media" styleClass="section-title"/>
+            
+            <VBox fx:id="mediaContainer" spacing="10" styleClass="media-container">
+                <!-- Media content will be loaded here dynamically -->
+            </VBox>
+        </VBox>
+
+        <Separator styleClass="styled-separator"/>
+
+        <!-- Related Quizzes Section -->
+        <VBox spacing="15" styleClass="content-section">
+            <HBox alignment="CENTER_LEFT" spacing="10">
+                <Label text="📝 Related Quizzes" styleClass="section-title"/>
+                <Label fx:id="quizCountLabel" text="(0)" styleClass="badge-count"/>
+            </HBox>
+            
+            <VBox fx:id="quizzesContainer" spacing="12">
+                <!-- Quizzes will be loaded here dynamically -->
+            </VBox>
+        </VBox>
+
+        <Separator styleClass="styled-separator"/>
+
+        <!-- Similar Courses Section -->
+        <VBox fx:id="similarCoursesSection" spacing="15" styleClass="content-section" visible="true" managed="true">
+            <HBox alignment="CENTER_LEFT" spacing="10">
+                <Label text="🎓 Students Who Took This Also Took" styleClass="section-title"/>
+            </HBox>
+            
+            <ScrollPane fitToHeight="true" hbarPolicy="AS_NEEDED" vbarPolicy="NEVER"
+                        style="-fx-background-color: transparent; -fx-border-color: transparent;">
+                <HBox fx:id="similarCoursesContainer" spacing="15" alignment="CENTER_LEFT">
+                    <!-- Similar courses will be loaded here dynamically -->
+                </HBox>
+            </ScrollPane>
+        </VBox>
+
+    </VBox>
+
+</VBox>
+
+</ScrollPane>

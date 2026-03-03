@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" 
+            fx:controller="edu.connexion3a8.controllers.gamification.MainMenuController"
+            fx:id="mainContainer"
+            style="-fx-background-color: #F7F0F5;">
+    
+    <top>
+        <!-- Navigation Bar -->
+        <HBox spacing="10" alignment="CENTER_LEFT" 
+              style="-fx-background-color: rgba(0, 5, 1, 0.95); -fx-padding: 15px 20px; -fx-border-color: rgba(247, 240, 245, 0.1); -fx-border-width: 0 0 1 0;">
+            
+            <Button text="🏠 Home" onAction="#showMainMenu" 
+                    style="-fx-background-color: transparent; -fx-text-fill: #F7F0F5; -fx-font-size: 14px; -fx-cursor: hand; -fx-padding: 8px 15px; -fx-background-radius: 6px;"/>
+            
+            <Button text="🔙 Back to Main" onAction="#goBackToHome" 
+                    style="-fx-background-color: transparent; -fx-text-fill: #F7F0F5; -fx-font-size: 14px; -fx-cursor: hand; -fx-padding: 8px 15px; -fx-background-radius: 6px;"/>
+            
+            <Region HBox.hgrow="ALWAYS"/>
+            
+            <Label text="Learning & Gamification" 
+                   style="-fx-text-fill: #F7F0F5; -fx-font-size: 16px; -fx-font-weight: bold;"/>
+        </HBox>
+    </top>
+    
+    <center>
+        <!-- Content will be loaded here dynamically -->
+        <VBox spacing="20" alignment="CENTER" style="-fx-background-color: linear-gradient(to bottom, #000501 0%, #1a2a3a 100%);">
+            
+            <padding>
+                <Insets top="50" right="50" bottom="50" left="50"/>
+            </padding>
+            
+            <!-- Title -->
+            <Label text="Learning Center" 
+                   style="-fx-font-size: 32px; -fx-font-weight: bold; -fx-text-fill: #F7F0F5;"/>
+            
+            <Label fx:id="subtitleLabel" text="Explore Courses & Quizzes" 
+                   style="-fx-font-size: 18px; -fx-text-fill: #F7F0F5;"/>
+            
+            <Region VBox.vgrow="ALWAYS" minHeight="30"/>
+            
+            <!-- User Menu Buttons (for all users) -->
+            <VBox fx:id="userMenuContainer" spacing="15" alignment="CENTER" maxWidth="300">
+                <Button text="📚 Browse Courses" onAction="#openCourseCatalog" 
+                        style="-fx-background-color: #456990; -fx-text-fill: white; -fx-font-size: 16px; -fx-padding: 15px; -fx-background-radius: 8px; -fx-cursor: hand;"
+                        prefWidth="280"/>
+                
+                <Button text="🏆 My Badges" onAction="#openMyBadges" 
+                        style="-fx-background-color: #9B7E46; -fx-text-fill: white; -fx-font-size: 16px; -fx-padding: 15px; -fx-background-radius: 8px; -fx-cursor: hand;"
+                        prefWidth="280"/>
+            </VBox>
+            
+            <!-- Admin Menu Buttons (only for admins) -->
+            <VBox fx:id="adminMenuContainer" spacing="15" alignment="CENTER" maxWidth="300" visible="false" managed="false">
+                <Separator prefWidth="280" style="-fx-background-color: rgba(247, 240, 245, 0.3);"/>
+                
+                <Label text="Admin Tools" 
+                       style="-fx-text-fill: #F7F0F5; -fx-font-size: 14px; -fx-font-weight: bold;"/>
+                
+                <Button text="📚 Manage Courses" onAction="#openCourseForm" 
+                        style="-fx-background-color: #456990; -fx-text-fill: white; -fx-font-size: 16px; -fx-padding: 15px; -fx-background-radius: 8px; -fx-cursor: hand;"
+                        prefWidth="280"/>
+                
+                <Button text="📝 Manage Quizzes" onAction="#openQuizForm" 
+                        style="-fx-background-color: #456990; -fx-text-fill: white; -fx-font-size: 16px; -fx-padding: 15px; -fx-background-radius: 8px; -fx-cursor: hand;"
+                        prefWidth="280"/>
+                
+                <Button text="🏆 Manage Badges" onAction="#openBadgeForm" 
+                        style="-fx-background-color: #9B7E46; -fx-text-fill: white; -fx-font-size: 16px; -fx-padding: 15px; -fx-background-radius: 8px; -fx-cursor: hand;"
+                        prefWidth="280"/>
+            </VBox>
+            
+            <Region VBox.vgrow="ALWAYS" minHeight="30"/>
+            
+            <Label text="© 2024 Learning Center - 3A8" 
+                   style="-fx-text-fill: #F7F0F5; -fx-font-size: 12px; -fx-opacity: 0.8;"/>
+            
+        </VBox>
+    </center>
+    
+</BorderPane>

@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.connexion3a8.controllers.collaboration.DealRoomController" stylesheets="@styles.css">
+
+    <!-- TOP NAV -->
+    <top>
+        <HBox alignment="CENTER_LEFT" spacing="20" style="-fx-background-color: #f8fafc; -fx-padding: 15; -fx-border-color: #e2e8f0; -fx-border-width: 0 0 1 0;">
+            <Label text="🤝 Deal Room Governance" style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #1e293b;"/>
+            <Region HBox.hgrow="ALWAYS" />
+            <Button text="Close Room" onAction="#closeWindow" styleClass="action-btn" />
+        </HBox>
+    </top>
+
+    <!-- CENTER CONTENT -->
+    <center>
+        <HBox spacing="20" style="-fx-padding: 20; -fx-background-color: #ffffff;">
+
+            <!-- LEFT: Metrics & Terms Panel -->
+            <VBox minWidth="300" maxWidth="350" spacing="15" style="-fx-background-color: #f8fafc; -fx-padding: 20; -fx-border-radius: 10; -fx-background-radius: 10; -fx-border-color: #e2e8f0;">
+
+                <Label text="Partnership Overview" style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
+                <Label fx:id="lbState" text="State: PRE-ACCEPTANCE" style="-fx-font-weight: bold; -fx-text-fill: #b45309;" />
+
+                <Separator />
+
+                <!-- Current Terms -->
+                <Label text="Current Terms" style="-fx-font-weight: bold;" />
+                <GridPane vgap="10" hgap="10">
+                    <Label text="Capital:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                    <Label fx:id="lbCapital" text="0 DT" style="-fx-font-weight: bold;" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+
+                    <Label text="Equity:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                    <Label fx:id="lbEquity" text="0%" style="-fx-font-weight: bold;" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+
+                    <Label text="Duration:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+                    <Label fx:id="lbDuration" text="0 Months" style="-fx-font-weight: bold;" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+                </GridPane>
+
+                <!-- Active Collaboration Metrics (shown only when ACCEPTED) -->
+                <VBox fx:id="activeMetricsBox" visible="false" managed="false" spacing="10" style="-fx-padding: 10 0 0 0;">
+
+                    <Separator />
+                    <Label text="Live Governance AI" style="-fx-font-weight: bold;" />
+
+                    <HBox alignment="CENTER_LEFT" spacing="8">
+                        <Label text="Temperature:" />
+                        <Button text="ⓘ" style="-fx-background-color: #e2e8f0; -fx-text-fill: #475569; -fx-font-size: 11px; -fx-font-weight: bold; -fx-background-radius: 100; -fx-min-width: 20; -fx-min-height: 20; -fx-max-width: 20; -fx-max-height: 20; -fx-padding: 0; -fx-cursor: hand;" onAction="#showTemperatureInfo"/>
+                        <Label fx:id="lbTemperature" text="WARM" style="-fx-font-weight: bold;" />
+                    </HBox>
+                    <HBox alignment="CENTER_LEFT" spacing="8">
+                        <Label text="Health Score:" />
+                        <Button text="ⓘ" style="-fx-background-color: #e2e8f0; -fx-text-fill: #475569; -fx-font-size: 11px; -fx-font-weight: bold; -fx-background-radius: 100; -fx-min-width: 20; -fx-min-height: 20; -fx-max-width: 20; -fx-max-height: 20; -fx-padding: 0; -fx-cursor: hand;" onAction="#showHealthScoreInfo"/>
+                        <ProgressBar fx:id="pbHealth" progress="0.8" style="-fx-accent: #16a34a;" />
+                        <Label fx:id="lbHealthVal" text="80/100" />
+                    </HBox>
+                    <HBox alignment="CENTER_LEFT" spacing="8">
+                        <Label text="Default Risk:" />
+                        <Button text="ⓘ" style="-fx-background-color: #e2e8f0; -fx-text-fill: #475569; -fx-font-size: 11px; -fx-font-weight: bold; -fx-background-radius: 100; -fx-min-width: 20; -fx-min-height: 20; -fx-max-width: 20; -fx-max-height: 20; -fx-padding: 0; -fx-cursor: hand;" onAction="#showDefaultRiskInfo"/>
+                        <Label fx:id="lbRisk" text="LOW (5%)" style="-fx-font-weight: bold; -fx-text-fill: #16a34a;" />
+                    </HBox>
+
+                    <!-- Financial Intelligence 2.0 -->
+                    <Separator />
+                    <Label text="Financial Intelligence 2.0" style="-fx-font-weight: bold;" />
+
+                    <HBox alignment="CENTER_LEFT" spacing="8">
+                        <Label text="Capital Velocity:" />
+                        <Button text="ⓘ" style="-fx-background-color: #e2e8f0; -fx-text-fill: #475569; -fx-font-size: 11px; -fx-font-weight: bold; -fx-background-radius: 100; -fx-min-width: 20; -fx-min-height: 20; -fx-max-width: 20; -fx-max-height: 20; -fx-padding: 0; -fx-cursor: hand;" onAction="#showCapitalVelocityInfo"/>
+                        <ProgressBar fx:id="pbVelocity" progress="0.5" style="-fx-accent: #2a506b;" />
+                        <Label fx:id="lbVelocityVal" text="50/100" style="-fx-font-weight: bold;"/>
+                    </HBox>
+                    <HBox alignment="CENTER_LEFT" spacing="8">
+                        <Label text="Burn Rate:" />
+                        <Button text="ⓘ" style="-fx-background-color: #e2e8f0; -fx-text-fill: #475569; -fx-font-size: 11px; -fx-font-weight: bold; -fx-background-radius: 100; -fx-min-width: 20; -fx-min-height: 20; -fx-max-width: 20; -fx-max-height: 20; -fx-padding: 0; -fx-cursor: hand;" onAction="#showBurnRateInfo"/>
+                        <Label fx:id="lbBurnRate" text="0 DT/mo" style="-fx-font-weight: bold; -fx-text-fill: #b45309;" />
+                    </HBox>
+                    <HBox alignment="CENTER_LEFT" spacing="8">
+                        <Label text="Est. Runway:" />
+                        <Button text="ⓘ" style="-fx-background-color: #e2e8f0; -fx-text-fill: #475569; -fx-font-size: 11px; -fx-font-weight: bold; -fx-background-radius: 100; -fx-min-width: 20; -fx-min-height: 20; -fx-max-width: 20; -fx-max-height: 20; -fx-padding: 0; -fx-cursor: hand;" onAction="#showRunwayInfo"/>
+                        <Label fx:id="lbRunway" text="0 Months" style="-fx-font-weight: bold; -fx-text-fill: #16a34a;" />
+                    </HBox>
+
+                    <!-- Adaptive Deal Balance (Fairness Drift) -->
+                    <Separator />
+                    <HBox alignment="CENTER_LEFT" spacing="8">
+                        <Label text="Adaptive Deal Balance" style="-fx-font-weight: bold;" />
+                        <Button text="ⓘ" style="-fx-background-color: #e2e8f0; -fx-text-fill: #475569; -fx-font-size: 11px; -fx-font-weight: bold; -fx-background-radius: 100; -fx-min-width: 20; -fx-min-height: 20; -fx-max-width: 20; -fx-max-height: 20; -fx-padding: 0; -fx-cursor: hand;" onAction="#showAdaptiveDealInfo"/>
+                    </HBox>
+
+                    <!-- Compass Slider -->
+                    <VBox spacing="5">
+                        <HBox alignment="CENTER">
+                            <Label text="Entrepreneur" style="-fx-font-size: 10px; -fx-text-fill: #64748b;"/>
+                            <Region HBox.hgrow="ALWAYS" />
+                            <Label text="Balanced" style="-fx-font-weight: bold; -fx-font-size: 10px; -fx-text-fill: #16a34a;"/>
+                            <Region HBox.hgrow="ALWAYS" />
+                            <Label text="Investor" style="-fx-font-size: 10px; -fx-text-fill: #64748b;"/>
+                        </HBox>
+                        <Slider fx:id="sliderFairness" min="0" max="100" value="50" disable="true" styleClass="fairness-slider" />
+                        <HBox alignment="CENTER">
+                            <Label fx:id="lbFairnessScore" text="Score: 100" style="-fx-font-size: 11px; -fx-font-weight: bold;"/>
+                        </HBox>
+                    </VBox>
+
+                    <!-- Equity Dual Bars -->
+                    <VBox spacing="4" style="-fx-padding: 5 0 0 0;">
+                        <HBox alignment="CENTER_LEFT" spacing="10">
+                            <Label text="Ideal Equity:" style="-fx-font-size: 11px;"/>
+                            <ProgressBar fx:id="pbIdealEquity" progress="0.2" style="-fx-accent: #2563eb;" />
+                            <Label fx:id="lbIdealVal" text="20%" style="-fx-font-size: 11px; -fx-font-weight: bold;" />
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" spacing="10">
+                            <Label text="Actual Equity:" style="-fx-font-size: 11px;"/>
+                            <ProgressBar fx:id="pbActualEquity" progress="0.2" style="-fx-accent: #475569;" />
+                            <Label fx:id="lbActualVal" text="20%" style="-fx-font-size: 11px; -fx-font-weight: bold;" />
+                        </HBox>
+                    </VBox>
+
+                </VBox>
+
+                <!-- Drift Alert Card -->
+                <VBox fx:id="driftAlertBox" visible="false" managed="false" spacing="5" style="-fx-padding: 10 0 0 0;">
+                    <Label text="⚠️ Fairness Drift Detected" style="-fx-font-weight: bold; -fx-text-fill: #dc2626; -fx-font-size: 13px;" />
+                    <Label text="Project progress and risk no longer align with current equity. Consider renegotiation." wrapText="true" style="-fx-font-size: 11px; -fx-text-fill: #dc2626;" />
+                </VBox>
+
+                <Region VBox.vgrow="ALWAYS" />
+
+                <!-- Pre-Acceptance Negotiation Box -->
+                <VBox fx:id="negotiationBox" spacing="10" style="-fx-padding: 10; -fx-background-color: #fff; -fx-border-radius: 8; -fx-border-color: #e2e8f0;">
+                    <HBox alignment="CENTER_LEFT" spacing="8">
+                        <Label text="Compatibility Index:" style="-fx-font-size: 12px; -fx-text-fill: #64748b;" />
+                        <Button text="ⓘ" style="-fx-background-color: #e2e8f0; -fx-text-fill: #475569; -fx-font-size: 11px; -fx-font-weight: bold; -fx-background-radius: 100; -fx-min-width: 20; -fx-min-height: 20; -fx-max-width: 20; -fx-max-height: 20; -fx-padding: 0; -fx-cursor: hand;" onAction="#showCompatibilityInfo"/>
+                    </HBox>
+                    <ProgressBar fx:id="pbCompatibility" progress="0.0" style="-fx-accent: #2563eb;" />
+                    <Label fx:id="lbCompatibility" text="Calculating..." style="-fx-font-weight: bold; -fx-font-size: 14px;" />
+                    <!-- Role-based Action Buttons (Injected via Controller) -->
+                    <HBox fx:id="actionButtonsBox" spacing="10" alignment="CENTER_LEFT" />
+                </VBox>
+
+            </VBox>
+
+            <!-- RIGHT: Chat / Communication Channel -->
+            <VBox HBox.hgrow="ALWAYS" spacing="10" style="-fx-border-color: #e2e8f0; -fx-border-radius: 10; -fx-background-radius: 10;">
+                <HBox style="-fx-background-color: #f1f5f9; -fx-padding: 10; -fx-background-radius: 10 10 0 0; -fx-border-color: #e2e8f0; -fx-border-width: 0 0 1 0;">
+                    <Label text="Communication Channel" style="-fx-font-weight: bold;" />
+                </HBox>
+
+                <ListView fx:id="chatList" VBox.vgrow="ALWAYS" style="-fx-background-color: white; -fx-border-width: 0;" />
+
+                <HBox spacing="10" style="-fx-padding: 10; -fx-background-color: #f8fafc; -fx-background-radius: 0 0 10 10; -fx-border-color: #e2e8f0; -fx-border-width: 1 0 0 0;">
+                    <TextField fx:id="chatInput" HBox.hgrow="ALWAYS" promptText="Type a message..." style="-fx-padding: 10;" onAction="#sendMessage" />
+                    <Button text="Send" onAction="#sendMessage" style="-fx-background-color: #1d4ed8; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 10 20; -fx-border-radius: 5; -fx-background-radius: 5; -fx-cursor: hand;" />
+                </HBox>
+            </VBox>
+
+        </HBox>
+    </center>
+
+</BorderPane>

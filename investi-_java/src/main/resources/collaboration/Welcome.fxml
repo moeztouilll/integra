@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import java.net.URL?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox alignment="CENTER" spacing="40" styleClass="main-container" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+    <stylesheets>
+        <URL value="@styles_premium.css"/>
+    </stylesheets>
+
+    <!-- Logo and Tagline -->
+    <VBox alignment="CENTER" spacing="15">
+        <ImageView fitHeight="150.0" fitWidth="350.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+                <Image url="@images/logo.png" />
+            </image>
+        </ImageView>
+        <Label text="Empowering Innovation, Together." style="-fx-font-size: 20px; -fx-text-fill: -app-primary; -fx-font-style: italic; -fx-font-weight: bold;" />
+    </VBox>
+    
+    <!-- Welcome Card -->
+    <VBox alignment="CENTER" spacing="20" styleClass="project-card" style="-fx-pref-width: 550; -fx-max-width: 550; -fx-padding: 50;">
+        <Label text="Welcome to the Platform" style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: -app-card-foreground;" />
+        <Label text="Please select your role from the top navigation bar to begin exploring projects, managing investments, and collaborating." style="-fx-font-size: 15px; -fx-text-fill: -app-muted-foreground; -fx-line-spacing: 5px;" wrapText="true" textAlignment="CENTER" />
+    </VBox>
+</VBox>

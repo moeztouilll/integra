@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import java.net.URL?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.chart.*?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+
+<StackPane fx:id="rootStack" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.connexion3a8.controllers.collaboration.AdminController">
+    <stylesheets>
+        <URL value="@styles_premium.css" />
+    </stylesheets>
+    
+    <!-- Main Content Layout -->
+    <HBox styleClass="main-container">
+        <!-- Sidebar -->
+        <VBox styleClass="sidebar">
+            <VBox styleClass="sidebar-logo-container">
+                <FontIcon iconLiteral="fth-shield" styleClass="sidebar-logo" />
+            </VBox>
+            
+            <Region VBox.vgrow="ALWAYS" />
+            
+            <VBox styleClass="nav-container">
+                <Button fx:id="navQueue" onAction="#showQueuePage" styleClass="nav-btn, active">
+                    <graphic><FontIcon iconLiteral="fth-alert-circle" styleClass="nav-icon" /></graphic>
+                    <tooltip><Tooltip text="Validation Queue" /></tooltip>
+                </Button>
+                <Button fx:id="navProjects" onAction="#showProjectsPage" styleClass="nav-btn">
+                    <graphic><FontIcon iconLiteral="fth-folder" styleClass="nav-icon" /></graphic>
+                    <tooltip><Tooltip text="All Projects" /></tooltip>
+                </Button>
+                <Button fx:id="navInvestments" onAction="#showInvestmentsPage" styleClass="nav-btn">
+                    <graphic><FontIcon iconLiteral="fth-briefcase" styleClass="nav-icon" /></graphic>
+                    <tooltip><Tooltip text="All Investments" /></tooltip>
+                </Button>
+                <Button fx:id="navStats" onAction="#showStatsPage" styleClass="nav-btn">
+                    <graphic><FontIcon iconLiteral="fth-pie-chart" styleClass="nav-icon" /></graphic>
+                    <tooltip><Tooltip text="Platform Statistics" /></tooltip>
+                </Button>
+            </VBox>
+            
+            <Region VBox.vgrow="ALWAYS" />
+            
+            <VBox styleClass="nav-container">
+                <Button styleClass="nav-btn" onAction="#goHome">
+                    <graphic><FontIcon iconLiteral="fth-home" styleClass="nav-icon" /></graphic>
+                    <tooltip><Tooltip text="Back to Home" /></tooltip>
+                </Button>
+                <Button styleClass="nav-btn" onAction="#logout">
+                    <graphic><FontIcon iconLiteral="fth-log-out" styleClass="nav-icon" /></graphic>
+                    <tooltip><Tooltip text="Logout" /></tooltip>
+                </Button>
+            </VBox>
+        </VBox>
+
+        <!-- Dynamic Content Area -->
+        <VBox HBox.hgrow="ALWAYS" styleClass="content-area">
+            <HBox alignment="CENTER_LEFT" spacing="20">
+                <VBox spacing="5" HBox.hgrow="ALWAYS">
+                    <Label fx:id="pageTitle" styleClass="title-text" text="Admin Dashboard" />
+                    <Label fx:id="pageSubtitle" styleClass="subtitle-text" text="Platform Management &amp; Analytics" />
+                </VBox>
+                <Button text="↺ Refresh System" onAction="#refreshDataAction" styleClass="add-btn" />
+            </HBox>
+
+            <VBox spacing="30" VBox.vgrow="ALWAYS" maxWidth="Infinity">
+                <padding><javafx.geometry.Insets top="40" bottom="0" left="0" right="0"/></padding>
+                
+                <StackPane VBox.vgrow="ALWAYS" maxWidth="Infinity">
+                    
+                    <!-- 1. Validation Queue -->
+                    <VBox fx:id="queuePage" spacing="30" VBox.vgrow="ALWAYS">
+                        
+                        <HBox alignment="CENTER_LEFT" spacing="15">
+                            <Label text="Validation Queue" style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #000501;"/>
+                            <Label fx:id="actionRequiredBadge" text="ACTION REQUIRED" style="-fx-font-size: 11px; -fx-background-color: #ca8a04; -fx-text-fill: white; -fx-padding: 4 8; -fx-background-radius: 6; -fx-font-weight: bold;" visible="false" managed="false"/>
+                        </HBox>
+
+                        <HBox spacing="30" VBox.vgrow="ALWAYS">
+                            <!-- Projects Queue Card -->
+                            <VBox spacing="15" HBox.hgrow="ALWAYS" styleClass="card-l1, glass-card" style="-fx-padding: 24;">
+                                <HBox alignment="CENTER_LEFT" spacing="10">
+                                    <Label text="📁 Projects Pending Review" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: -app-primary;"/>
+                                </HBox>
+                                <TableView fx:id="projectTableQueue" VBox.vgrow="ALWAYS" style="-fx-border-radius: 8; -fx-background-radius: 8; -fx-border-color: #e2e8f0; -fx-border-width: 1;">
+                                    <columns>
+                                        <TableColumn fx:id="colProjectIdQ" text="ID" style="-fx-alignment: CENTER;"/>
+                                        <TableColumn fx:id="colProjectTitleQ" text="Title"/>
+                                        <TableColumn fx:id="colProjectDescQ" text="Description"/>
+                                        <TableColumn fx:id="colProjectRepoQ" text="Creator"/>
+                                    </columns>
+                                    <columnResizePolicy><TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/></columnResizePolicy>
+                                </TableView>
+                                <HBox spacing="15" alignment="CENTER_RIGHT" style="-fx-padding: 10 0 0 0;">
+                                    <Button text="Reject &amp; Delete" style="-fx-background-color: transparent; -fx-border-color: #dc2626; -fx-border-radius: 8; -fx-text-fill: #dc2626; -fx-font-weight: bold; -fx-padding: 8 20;" onAction="#deleteProjectQueue"/>
+                                    <Button text="Validate Project" style="-fx-background-color: #16a34a; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 8; -fx-padding: 8 20; -fx-effect: dropshadow(gaussian, rgba(22,163,74,0.3), 10, 0, 0, 4);" onAction="#validateProject"/>
+                                </HBox>
+                            </VBox>
+
+                            <!-- Investments Queue Card -->
+                            <VBox spacing="15" HBox.hgrow="ALWAYS" styleClass="card-l1, glass-card" style="-fx-padding: 24;">
+                                <HBox alignment="CENTER_LEFT" spacing="10">
+                                    <Label text="💼 Investments Pending Review" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: -app-primary;"/>
+                                </HBox>
+                                <TableView fx:id="investmentTableQueue" VBox.vgrow="ALWAYS" style="-fx-border-radius: 8; -fx-background-radius: 8; -fx-border-color: #e2e8f0; -fx-border-width: 1;">
+                                    <columns>
+                                        <TableColumn fx:id="colInvIdQ" text="ID" style="-fx-alignment: CENTER;"/>
+                                        <TableColumn fx:id="colInvProjectQ" text="Project"/>
+                                        <TableColumn fx:id="colInvInvestorQ" text="Investor"/>
+                                        <TableColumn fx:id="colInvAmountQ" text="Amount"/>
+                                        <TableColumn fx:id="colInvEquityQ" text="Equity %" style="-fx-alignment: CENTER;"/>
+                                    </columns>
+                                    <columnResizePolicy><TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/></columnResizePolicy>
+                                </TableView>
+                                <HBox spacing="15" alignment="CENTER_RIGHT" style="-fx-padding: 10 0 0 0;">
+                                    <Button text="Reject &amp; Delete" style="-fx-background-color: transparent; -fx-border-color: #dc2626; -fx-border-radius: 8; -fx-text-fill: #dc2626; -fx-font-weight: bold; -fx-padding: 8 20;" onAction="#deleteInvestmentQueue"/>
+                                    <Button text="Validate Investment" style="-fx-background-color: #16a34a; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 8; -fx-padding: 8 20; -fx-effect: dropshadow(gaussian, rgba(22,163,74,0.3), 10, 0, 0, 4);" onAction="#validateInvestment"/>
+                                </HBox>
+                            </VBox>
+                        </HBox>
+                    </VBox>
+
+                    <!-- 2. All Projects Page -->
+                    <VBox fx:id="projectsPage" spacing="20" visible="false" managed="false" VBox.vgrow="ALWAYS">
+                        <HBox spacing="15" alignment="CENTER_LEFT">
+                            <TextField fx:id="searchProjectsField" promptText="🔎 Search All Projects..." style="-fx-background-radius: 20; -fx-padding: 8 15;"/>
+                        </HBox>
+                        <TableView fx:id="projectTableAll" VBox.vgrow="ALWAYS" style="-fx-border-radius: 10; -fx-background-radius: 10;">
+                            <columns>
+                                <TableColumn fx:id="colProjectIdAll" text="ID"/>
+                                <TableColumn fx:id="colProjectTitleAll" text="Title"/>
+                                <TableColumn fx:id="colProjectDescAll" text="Description"/>
+                                <TableColumn fx:id="colProjectRepoAll" text="Creator"/>
+                                <TableColumn fx:id="colProjectStatusAll" text="Status"/>
+                            </columns>
+                            <columnResizePolicy><TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/></columnResizePolicy>
+                        </TableView>
+                        <HBox alignment="CENTER_RIGHT">
+                            <Button text="🗑️ Delete Permanently" styleClass="add-btn" style="-fx-background-color: #A62639;" onAction="#deleteProjectAll"/>
+                        </HBox>
+                    </VBox>
+
+                    <!-- 3. All Investments Page -->
+                    <VBox fx:id="investmentsPage" spacing="20" visible="false" managed="false" VBox.vgrow="ALWAYS">
+                        <HBox spacing="15" alignment="CENTER_LEFT">
+                            <TextField fx:id="searchInvestmentsField" promptText="🔎 Search All Investments..." style="-fx-background-radius: 20; -fx-padding: 8 15;"/>
+                        </HBox>
+                        <TableView fx:id="investmentTableAll" VBox.vgrow="ALWAYS" style="-fx-border-radius: 10; -fx-background-radius: 10;">
+                            <columns>
+                                <TableColumn fx:id="colInvIdAll" text="ID"/>
+                                <TableColumn fx:id="colInvProjectAll" text="Project"/>
+                                <TableColumn fx:id="colInvInvestorAll" text="Investor"/>
+                                <TableColumn fx:id="colInvAmountAll" text="Amount"/>
+                                <TableColumn fx:id="colInvEquityAll" text="Equity %"/>
+                                <TableColumn fx:id="colInvStatusAll" text="Status"/>
+                            </columns>
+                            <columnResizePolicy><TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/></columnResizePolicy>
+                        </TableView>
+                        <HBox alignment="CENTER_RIGHT">
+                            <Button text="🗑️ Delete Permanently" styleClass="add-btn" style="-fx-background-color: #A62639;" onAction="#deleteInvestmentAll"/>
+                        </HBox>
+                    </VBox>
+
+                    <!-- 4. Statistics Page -->
+                    <VBox fx:id="statsPage" spacing="30" visible="false" managed="false" VBox.vgrow="ALWAYS">
+                        
+                        <HBox alignment="CENTER_LEFT" spacing="15">
+                            <Label text="Platform Statistics" style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #000501;"/>
+                            <Label text="LIVE DATA" style="-fx-font-size: 11px; -fx-background-color: #10b981; -fx-text-fill: white; -fx-padding: 4 8; -fx-background-radius: 6; -fx-font-weight: bold;"/>
+                        </HBox>
+
+                        <ScrollPane fitToWidth="true" style="-fx-background-color: transparent; -fx-background: transparent;" VBox.vgrow="ALWAYS">
+                            <VBox fx:id="statsContainer" spacing="25" style="-fx-padding: 10 20 40 10;">
+                                <!-- Populated entirely via Java -->
+                            </VBox>
+                        </ScrollPane>
+                    </VBox>
+
+                </StackPane>
+            </VBox>
+        </VBox>
+    </HBox>
+</StackPane>

@@ -1,0 +1,667 @@
+/* Root Variables - Baltic & Copper Theme (Light) */
+.root {
+    -app-background: #f8fafc;
+    -app-foreground: #111111;
+    -app-card: rgba(255, 255, 255, 0.7);
+    /* Light Frosted glass */
+    -app-card-foreground: #1d3649;
+    /* Deep Baltic Blue text on cards */
+    -app-primary: #2a506b;
+    /* Baltic Blue */
+    -app-secondary: #c07c4b;
+    /* Faded Copper */
+    -app-accent: #8b3a3a;
+    /* Brown Red */
+
+    -app-border: rgba(42, 80, 107, 0.15);
+    /* Baltic Blue tinted border */
+    -app-muted: rgba(42, 80, 107, 0.05);
+    /* Extremely subtle overlay */
+    -app-muted-foreground: #5a7b93;
+    /* Muted Baltic */
+
+    -app-sidebar: rgba(255, 255, 255, 0.5);
+    /* Light flat panel */
+    -app-sidebar-border: rgba(42, 80, 107, 0.1);
+
+    -app-gradient-primary: linear-gradient(to bottom right, #2a506b, #1d3649);
+}
+
+.main-container {
+    -fx-background-color: -app-background;
+}
+
+/* Sidebar (Level 1 Panel) */
+.sidebar {
+    -fx-background-color: -app-sidebar;
+    -fx-border-color: -app-sidebar-border;
+    -fx-border-width: 0 1 0 0;
+    -fx-padding: 24 12;
+    -fx-min-width: 96;
+    -fx-max-width: 96;
+    -fx-alignment: top-center;
+    -fx-spacing: 30;
+    /* Soft inner glow on top border */
+    -fx-effect: innershadow(three-pass-box, rgba(255, 255, 255, 0.5), 2, 0, 0, 1);
+}
+
+.sidebar-logo-container {
+    -fx-background-color: -app-gradient-primary;
+    -fx-background-radius: 12;
+    -fx-min-width: 56;
+    -fx-min-height: 56;
+    -fx-alignment: center;
+    -fx-effect: dropshadow(three-pass-box, rgba(42, 80, 107, 0.3), 15, 0, 0, 4);
+}
+
+.sidebar-logo {
+    -fx-icon-size: 28;
+    -fx-icon-color: #e6e6fa;
+    /* Lavender mist logo mark */
+}
+
+.nav-container {
+    -fx-spacing: 12;
+    -fx-alignment: top-center;
+}
+
+.nav-btn {
+    -fx-background-color: transparent;
+    -fx-background-radius: 12;
+    -fx-min-width: 48;
+    -fx-min-height: 48;
+    -fx-padding: 0;
+    -fx-cursor: hand;
+}
+
+.nav-btn:hover {
+    -fx-background-color: -app-muted;
+}
+
+.nav-btn.active {
+    -fx-background-color: rgba(192, 124, 75, 0.15);
+    /* Faded Copper light tint */
+    -fx-effect: dropshadow(three-pass-box, rgba(192, 124, 75, 0.2), 10, 0, 0, 0);
+}
+
+.nav-icon {
+    -fx-icon-size: 20;
+    -fx-icon-color: -app-muted-foreground;
+}
+
+.nav-btn.active .nav-icon {
+    -fx-icon-color: -app-secondary;
+    /* Faded Copper */
+}
+
+/* Content Area */
+.content-area {
+    -fx-padding: 40;
+    -fx-background-color: transparent;
+}
+
+.title-text {
+    -fx-font-size: 36;
+    -fx-font-weight: bold;
+    -fx-text-fill: -app-foreground;
+    /* Tighter letter spacing for modern headers */
+    -fx-letter-spacing: -1;
+}
+
+.subtitle-text {
+    -fx-font-size: 16;
+    -fx-text-fill: -app-muted-foreground;
+}
+
+/* 
+ * ─── LEVEL 2: GLASSMORPHISM CARDS & ELEVATION SYSTEM ─────────────────────────
+ */
+
+/* L0: Backgrounds */
+.pane-l0 {
+    -fx-background-color: transparent;
+}
+
+/* L1: Standard Cards */
+.card-l1 {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 14;
+    -fx-effect: dropshadow(gaussian, rgba(42, 80, 107, 0.08), 20, 0.2, 0, 6);
+}
+
+/* L2: Hovered/Elevated Cards */
+.card-l2 {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 14;
+    -fx-effect: dropshadow(gaussian, rgba(42, 80, 107, 0.15), 30, 0.3, 0, 10),
+        dropshadow(gaussian, rgba(230, 230, 250, 0.5), 25, 0.2, 0, 0);
+    /* Lavender glow */
+}
+
+/* L3: Overlays / Dialogs */
+.card-l3 {
+    -fx-background-color: rgba(255, 255, 255, 0.95);
+    -fx-background-radius: 16;
+    -fx-effect: dropshadow(gaussian, rgba(42, 80, 107, 0.25), 40, 0.4, 0, 15);
+}
+
+/* L4: Active Deal Room (Deep Focus) */
+.card-l4 {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 16;
+    -fx-effect: dropshadow(gaussian, rgba(42, 80, 107, 0.3), 50, 0.5, 0, 20),
+        dropshadow(gaussian, rgba(42, 80, 107, 0.8), 20, 0.2, 0, 0);
+    /* Baltic Blue strong glow */
+}
+
+/* Authentic Glass Layering */
+.glass-card {
+    -fx-background-color: rgba(255, 255, 255, 0.92);
+    -fx-background-radius: 16;
+    -fx-border-radius: 16;
+    -fx-border-color: rgba(230, 230, 250, 0.6);
+    /* Lavender mist edge */
+    -fx-border-width: 1;
+}
+
+/* Professional Skeleton Loading Shimmer */
+.skeleton {
+    -fx-background-color: linear-gradient(from 0% 0% to 100% 0%, #f0f2f5 25%, #e6e6fa 50%, #f0f2f5 75%);
+    -fx-background-radius: 8;
+}
+
+/* Applying to Project Cards */
+.project-card {
+    -fx-background-color: -app-card;
+    -fx-border-color: -app-border;
+    -fx-border-width: 0.5px;
+    -fx-border-radius: 12;
+    -fx-background-radius: 12;
+    -fx-pref-width: 320;
+    -fx-effect: dropshadow(gaussian, rgba(42, 80, 107, 0.08), 20, 0.2, 0, 6);
+    /* L1 Shadow */
+    -fx-padding: 24;
+    -fx-spacing: 12;
+    -fx-cursor: hand;
+}
+
+.project-card:hover {
+    -fx-border-color: rgba(42, 80, 107, 0.3);
+}
+
+.project-card.funded {
+    -fx-border-color: rgba(139, 58, 58, 0.6);
+    /* Brown Red */
+    -fx-border-width: 1px;
+}
+
+.project-card.open {
+    -fx-border-color: -app-primary;
+    -fx-border-width: 1px;
+}
+
+.category-badge {
+    -fx-background-color: -app-primary;
+    -fx-text-fill: #e6e6fa;
+    -fx-padding: 6 12;
+    -fx-background-radius: 8;
+    -fx-font-size: 11;
+    -fx-font-weight: bold;
+}
+
+.ai-recommendation-badge {
+    -fx-background-color: rgba(192, 124, 75, 0.15);
+    /* Faded Copper tinted */
+    -fx-text-fill: -app-secondary;
+    -fx-padding: 6 12;
+    -fx-background-radius: 8;
+    -fx-font-size: 11;
+    -fx-font-weight: bold;
+}
+
+.badge-new {
+    -fx-background-color: -app-secondary;
+    -fx-text-fill: #111111;
+    -fx-padding: 6 10;
+    -fx-background-radius: 12;
+    -fx-font-size: 11;
+    -fx-font-weight: bold;
+}
+
+.badge-hot {
+    -fx-background-color: -app-accent;
+    -fx-text-fill: #e6e6fa;
+    -fx-padding: 6 10;
+    -fx-background-radius: 12;
+    -fx-font-size: 11;
+    -fx-font-weight: bold;
+}
+
+.health-healthy {
+    -fx-background-color: rgba(42, 80, 107, 0.1);
+    -fx-text-fill: -app-primary;
+    -fx-padding: 6 12;
+    -fx-background-radius: 20;
+    -fx-font-size: 14;
+    -fx-font-weight: bold;
+}
+
+.health-warning {
+    -fx-background-color: rgba(192, 124, 75, 0.15);
+    -fx-text-fill: -app-secondary;
+    -fx-padding: 6 12;
+    -fx-background-radius: 20;
+    -fx-font-size: 14;
+    -fx-font-weight: bold;
+}
+
+.health-danger {
+    -fx-background-color: rgba(139, 58, 58, 0.1);
+    -fx-text-fill: -app-accent;
+    -fx-padding: 6 12;
+    -fx-background-radius: 20;
+    -fx-font-size: 14;
+    -fx-font-weight: bold;
+}
+
+.card-title {
+    -fx-font-size: 20;
+    -fx-font-weight: bold;
+    -fx-text-fill: -app-card-foreground;
+}
+
+.card-desc {
+    -fx-font-size: 13;
+    -fx-text-fill: -app-muted-foreground;
+    -fx-min-height: 45;
+}
+
+.card-price {
+    -fx-font-size: 20;
+    -fx-font-weight: bold;
+    -fx-text-fill: -app-secondary;
+}
+
+.add-btn {
+    -fx-background-color: -app-primary;
+    -fx-text-fill: #e6e6fa;
+    -fx-background-radius: 10;
+    -fx-padding: 10 20;
+    -fx-font-weight: bold;
+    -fx-min-width: 100;
+    -fx-cursor: hand;
+}
+
+.add-btn:hover {
+    -fx-background-color: derive(-app-primary, -15%);
+}
+
+.ai-btn {
+    -fx-background-color: -app-secondary;
+    -fx-text-fill: #111111;
+    -fx-background-radius: 10;
+    -fx-padding: 10 20;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+}
+
+.ai-btn:hover {
+    -fx-background-color: derive(-app-secondary, -15%);
+}
+
+/* ScrollPane Styling */
+.scroll-pane {
+    -fx-background-color: transparent;
+}
+
+.scroll-pane .viewport {
+    -fx-background-color: transparent;
+}
+
+.scroll-pane .thumb {
+    -fx-background-color: -app-border;
+    -fx-background-radius: 5;
+}
+
+/* Details Overlay (Level 4: High Elevation) */
+.detail-overlay {
+    -fx-background-color: rgba(0, 0, 0, 0.6);
+    /* Darker scrim to push content back */
+    -fx-alignment: center;
+    -fx-padding: 60;
+}
+
+.detail-card {
+    -fx-background-color: rgba(25, 26, 35, 0.85);
+    /* Highly opaque glass */
+    -fx-border-color: rgba(255, 255, 255, 0.15);
+    -fx-border-radius: 24;
+    -fx-background-radius: 24;
+    -fx-max-width: 900;
+    -fx-max-height: 700;
+    -fx-padding: 40;
+    /* Massive drop shadow for maximum elevation */
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.6), 60, 0, 0, 30);
+    -fx-spacing: 20;
+}
+
+.close-detail-btn {
+    -fx-background-color: -app-muted;
+    -fx-background-radius: 50;
+    -fx-padding: 10;
+    -fx-cursor: hand;
+}
+
+.close-detail-btn:hover {
+    -fx-background-color: rgba(239, 68, 68, 0.2);
+}
+
+.detail-title {
+    -fx-font-size: 32;
+    -fx-font-weight: bold;
+    -fx-text-fill: #e6e6fa !important;
+}
+
+.detail-card Label {
+    -fx-text-fill: #e6e6fa !important;
+}
+
+.detail-card .category-badge {
+    -fx-text-fill: #e6e6fa !important;
+}
+
+.detail-card .meta-label {
+    -fx-text-fill: rgba(230, 230, 250, 0.7) !important;
+}
+
+.detail-card .meta-value {
+    -fx-text-fill: #e6e6fa !important;
+}
+
+.meta-grid {
+    -fx-hgap: 20;
+    -fx-vgap: 20;
+    -fx-padding: 10 0;
+}
+
+.meta-item {
+    -fx-background-color: rgba(0, 0, 0, 0.2);
+    /* Inner cut-out feel */
+    -fx-background-radius: 12;
+    -fx-padding: 15;
+    -fx-min-width: 120;
+    -fx-border-color: rgba(255, 255, 255, 0.05);
+    -fx-border-radius: 12;
+}
+
+.meta-label {
+    -fx-font-size: 11;
+    -fx-text-fill: -app-muted-foreground;
+    -fx-font-weight: bold;
+}
+
+.meta-value {
+    -fx-font-size: 16;
+    -fx-text-fill: -app-foreground;
+    -fx-font-weight: bold;
+    -fx-font-feature-settings: "tnum" 1;
+    /* Tabular numbers for perfect alignment */
+}
+
+/* Progress Tracking Page */
+.progress-card {
+    -fx-background-color: -app-card;
+    -fx-border-radius: 16;
+    -fx-background-radius: 16;
+    -fx-padding: 30;
+    -fx-spacing: 20;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.05), 10, 0, 0, 5);
+}
+
+.progress-bar {
+    -fx-accent: -app-primary;
+}
+
+.progress-title {
+    -fx-font-size: 24;
+    -fx-font-weight: bold;
+    -fx-text-fill: -app-foreground;
+}
+
+.progress-log-box {
+    -fx-background-color: -app-muted;
+    -fx-padding: 15;
+    -fx-background-radius: 8;
+    -fx-text-fill: -app-muted-foreground;
+}
+
+/* ─── Milestone Timeline ─────────────────────────────────────── */
+.milestone-node-pending {
+    -fx-fill: transparent;
+    -fx-stroke: #94a3b8;
+    -fx-stroke-width: 3;
+}
+
+.milestone-node-in-progress {
+    -fx-fill: #fef3c7;
+    -fx-stroke: #f59e0b;
+    -fx-stroke-width: 3;
+    -fx-effect: dropshadow(three-pass-box, rgba(245, 158, 11, 0.6), 12, 0.4, 0, 0);
+}
+
+.milestone-node-completed {
+    -fx-fill: #16a34a;
+    -fx-stroke: #16a34a;
+    -fx-stroke-width: 3;
+    -fx-effect: dropshadow(three-pass-box, rgba(22, 163, 74, 0.5), 10, 0.3, 0, 0);
+}
+
+.milestone-label {
+    -fx-font-size: 11;
+    -fx-text-fill: -app-muted-foreground;
+    -fx-font-weight: bold;
+    -fx-wrap-text: true;
+    -fx-text-alignment: center;
+    -fx-max-width: 90;
+}
+
+.milestone-date-label {
+    -fx-font-size: 10;
+    -fx-text-fill: #94a3b8;
+    -fx-text-alignment: center;
+}
+
+.milestone-connector {
+    -fx-stroke: #e2e8f0;
+    -fx-stroke-width: 3;
+}
+
+.milestone-connector-done {
+    -fx-stroke: #16a34a;
+    -fx-stroke-width: 3;
+}
+
+/* Completion Ring Container */
+.completion-ring-container {
+    -fx-alignment: center;
+    -fx-padding: 10;
+}
+
+.completion-ring-label {
+    -fx-font-size: 28;
+    -fx-font-weight: bold;
+    -fx-text-fill: -app-foreground;
+}
+
+.completion-ring-sublabel {
+    -fx-font-size: 12;
+    -fx-text-fill: -app-muted-foreground;
+}
+
+/* Milestone status badges */
+.milestone-status-pending {
+    -fx-background-color: #f1f5f9;
+    -fx-text-fill: #64748b;
+    -fx-padding: 4 10;
+    -fx-background-radius: 20;
+    -fx-font-size: 11;
+    -fx-font-weight: bold;
+}
+
+.milestone-status-in-progress {
+    -fx-background-color: #fef3c7;
+    -fx-text-fill: #92400e;
+    -fx-padding: 4 10;
+    -fx-background-radius: 20;
+    -fx-font-size: 11;
+    -fx-font-weight: bold;
+}
+
+.milestone-status-completed {
+    -fx-background-color: #dcfce7;
+    -fx-text-fill: #166534;
+    -fx-padding: 4 10;
+    -fx-background-radius: 20;
+    -fx-font-size: 11;
+    -fx-font-weight: bold;
+}
+
+/* Milestone add button */
+.milestone-add-btn {
+    -fx-background-color: derive(-app-primary, 80%);
+    -fx-text-fill: -app-primary;
+    -fx-background-radius: 8;
+    -fx-padding: 6 16;
+    -fx-font-weight: bold;
+    -fx-font-size: 12;
+    -fx-cursor: hand;
+}
+
+.milestone-add-btn:hover {
+    -fx-background-color: derive(-app-primary, 60%);
+}
+
+/* Milestone section header */
+.milestone-section-title {
+    -fx-font-size: 16;
+    -fx-font-weight: bold;
+    -fx-text-fill: -app-foreground;
+}
+
+/* Funded card radar pulse styling (animation via JavaFX Timeline) */
+.radar-pulse-card {
+    -fx-pref-width: 320;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   STYLED DIALOG PANE (Baltic Blue / Copper Theme)
+   ═══════════════════════════════════════════════════════════════ */
+
+.styled-dialog .dialog-pane {
+    -fx-background-color: #f5f3ff;
+    -fx-border-color: rgba(42, 80, 107, 0.25);
+    -fx-border-width: 1.5;
+    -fx-border-radius: 16;
+    -fx-background-radius: 16;
+    -fx-padding: 24 28;
+    -fx-effect: dropshadow(three-pass-box, rgba(42, 80, 107, 0.35), 32, 0, 0, 8);
+    -fx-min-width: 380;
+}
+
+.styled-dialog .dialog-pane .header-panel {
+    -fx-background-color: transparent;
+    -fx-padding: 0 0 12 0;
+}
+
+.styled-dialog .dialog-pane .header-panel .label {
+    -fx-font-size: 17px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1d3649;
+}
+
+.styled-dialog .dialog-pane .content {
+    -fx-font-size: 13px;
+    -fx-text-fill: #2a506b;
+    -fx-padding: 8 0 20 0;
+}
+
+.styled-dialog .dialog-pane .button-bar .button {
+    -fx-background-color: #2a506b;
+    -fx-text-fill: #e6e6fa;
+    -fx-background-radius: 10;
+    -fx-padding: 8 22;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+}
+
+.styled-dialog .dialog-pane .button-bar .button:hover {
+    -fx-background-color: #1d3649;
+}
+
+.styled-dialog .dialog-pane .button-bar .cancel-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #5a7b93;
+    -fx-border-color: rgba(42, 80, 107, 0.3);
+    -fx-border-radius: 10;
+    -fx-border-width: 1;
+}
+
+.styled-dialog .dialog-pane .button-bar .cancel-button:hover {
+    -fx-background-color: rgba(42, 80, 107, 0.08);
+}
+
+/* Choice Dialog specific styling */
+.styled-dialog .dialog-pane .combo-box {
+    -fx-background-color: white;
+    -fx-border-color: rgba(42, 80, 107, 0.4);
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   FLOATING LABEL TEXT FIELD WRAPPER
+   Usage: wrap a TextField + Label in a StackPane with class 'float-label-wrapper'
+   ═══════════════════════════════════════════════════════════════ */
+
+.float-label-wrapper {
+    -fx-alignment: top-left;
+    -fx-padding: 12 0 0 0;
+}
+
+.float-label-wrapper .text-field {
+    -fx-background-color: white;
+    -fx-border-color: rgba(42, 80, 107, 0.3);
+    -fx-border-width: 0 0 2 0;
+    -fx-background-radius: 8 8 0 0;
+    -fx-padding: 12 12 8 12;
+    -fx-font-size: 14px;
+    -fx-text-fill: #1d3649;
+    -fx-prompt-text-fill: transparent;
+}
+
+.float-label-wrapper .text-field:focused {
+    -fx-border-color: #2a506b;
+}
+
+/* The floating hint label */
+.float-label-wrapper .float-label {
+    -fx-font-size: 11px;
+    -fx-text-fill: #5a7b93;
+    -fx-font-weight: bold;
+    -fx-padding: 0 0 2 13;
+    -fx-translate-y: -14;
+}
+
+/* Active label color when focused */
+.float-label-wrapper .float-label.focused {
+    -fx-text-fill: #2a506b;
+}
+/*  Premium Scrollbar Styling - Ultimate Polish  */
+.scroll-pane { -fx-background-color: transparent; -fx-background: transparent; }
+.scroll-pane > .viewport { -fx-background-color: transparent; }
+.scroll-bar:vertical, .scroll-bar:horizontal { -fx-background-color: transparent; }
+.scroll-bar:vertical .thumb, .scroll-bar:horizontal .thumb { -fx-background-color: rgba(69, 105, 144, 0.3); -fx-background-radius: 10; }
+.scroll-bar:vertical .thumb:hover, .scroll-bar:horizontal .thumb:hover { -fx-background-color: rgba(166, 38, 57, 0.6); }
+.scroll-bar .increment-button, .scroll-bar .decrement-button, .scroll-bar .increment-arrow, .scroll-bar .decrement-arrow { -fx-background-color: transparent; -fx-padding: 0; -fx-shape: ''; }
+
