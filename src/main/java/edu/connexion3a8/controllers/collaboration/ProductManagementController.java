@@ -2,8 +2,14 @@ package edu.connexion3a8.controllers.collaboration;
 
 import edu.connexion3a8.InvestiApp;
 import javafx.fxml.FXML;
+import javafx.scene.control.TextField;
+import javafx.stage.FileChooser;
+import java.io.File;
 
 public class ProductManagementController {
+
+    @FXML
+    private TextField imageUrlField;
 
     @FXML
     private void handleAddProduct() {
@@ -45,5 +51,29 @@ public class ProductManagementController {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @FXML
+    private void handleBrowseImage() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Select Product Image");
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg", "*.gif", "*.bmp", "*.webp"));
+        File selectedFile = fileChooser.showOpenDialog(null);
+        if (selectedFile != null && imageUrlField != null) {
+            imageUrlField.setText(selectedFile.getAbsolutePath());
+        }
+    }
+
+    @FXML
+    private void handleSave() {
+        // TODO: Implement save product functionality
+        System.out.println("Save product clicked");
+    }
+
+    @FXML
+    private void handleCancel() {
+        // TODO: Implement cancel functionality
+        System.out.println("Cancel clicked");
     }
 }
