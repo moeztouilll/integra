@@ -1,0 +1,190 @@
+/* 
+ * Investi - Professional Stylesheet 
+ * Palette: Black, Lavender Mist, Baltic Blue, Faded Copper, Brown Red
+ */
+
+.root {
+    -fx-font-family: "Inter", "Segoe UI", sans-serif;
+    -fx-font-size: 14px;
+    -fx-background-color: #E6E6FA;
+    /* Lavender Mist */
+}
+
+/* --- Colors --- */
+/* Black: #000000 */
+/* Lavender Mist: #E6E6FA */
+/* Baltic Blue: #2A52BE */
+/* Faded Copper: #C89F81 */
+/* Brown Red: #A03030 */
+
+/* --- Layout & Containers --- */
+.sidebar {
+    -fx-background-color: linear-gradient(to bottom, #000000, #1a1a2e);
+    /* Gradient Black to Dark Blue */
+    -fx-padding: 30 20;
+    -fx-spacing: 20;
+    -fx-pref-width: 260;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.3), 10, 0, 0, 0);
+}
+
+.content-area {
+    -fx-background-color: #f4f7f6;
+    -fx-padding: 40;
+}
+
+.card {
+    -fx-background-color: white;
+    -fx-background-radius: 12;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.08), 15, 0, 0, 5);
+    -fx-padding: 25;
+}
+
+/* --- Typography --- */
+.heading-1 {
+    -fx-font-size: 28px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2A52BE;
+    -fx-effect: dropshadow(gaussian, rgba(42, 82, 190, 0.2), 0, 0, 0, 1);
+}
+
+.heading-2 {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #444444;
+}
+
+.label {
+    -fx-text-fill: #444444;
+}
+
+.sidebar .label {
+    -fx-text-fill: #bbbbbb;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-padding: 0 0 10 0;
+}
+
+/* --- Buttons --- */
+.button {
+    -fx-background-color: #2A52BE;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 6;
+    -fx-padding: 10 25;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(three-pass-box, rgba(42, 82, 190, 0.3), 5, 0, 0, 2);
+}
+
+.button:hover {
+    -fx-background-color: #1E3A8A;
+    -fx-translate-y: -1;
+}
+
+.button:pressed {
+    -fx-background-color: #172554;
+    -fx-translate-y: 1;
+}
+
+.nav-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #dcdcdc;
+    -fx-alignment: BASELINE_LEFT;
+    -fx-font-size: 16px;
+    -fx-padding: 12 20;
+    -fx-background-radius: 8;
+    -fx-cursor: hand;
+}
+
+.nav-button:hover {
+    -fx-background-color: rgba(255, 255, 255, 0.1);
+    -fx-text-fill: white;
+    -fx-padding: 12 20 12 25;
+    /* Slight indent effect */
+}
+
+.secondary-button {
+    -fx-background-color: #C89F81;
+    /* Faded Copper */
+    -fx-text-fill: black;
+}
+
+.secondary-button:hover {
+    -fx-background-color: #A07A5E;
+}
+
+.danger-button {
+    -fx-background-color: #A03030;
+    /* Brown Red */
+}
+
+.danger-button:hover {
+    -fx-background-color: #782424;
+}
+
+/* --- Status Badges --- */
+.status-badge {
+    -fx-background-radius: 12;
+    -fx-padding: 4 10;
+    -fx-text-fill: white;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+}
+
+.status-under-review {
+    -fx-background-color: #C89F81;
+    /* Faded Copper - Waiting */
+}
+
+.status-open,
+.status-uploaded,
+.status-pending {
+    -fx-background-color: #2A52BE;
+    /* Baltic Blue - Active/Good */
+}
+
+.status-accepted,
+.status-funded {
+    -fx-background-color: #27ae60;
+    /* Green (Standard success, distinct from Palette but needed) */
+}
+
+.status-refused,
+.status-closed {
+    -fx-background-color: #A03030;
+    /* Brown Red - Bad/Stop */
+}
+
+/* --- Form Elements --- */
+.text-field {
+    -fx-background-color: white;
+    -fx-border-color: #cccccc;
+    -fx-border-radius: 4;
+    -fx-padding: 8;
+}
+
+.text-field:focused {
+    -fx-border-color: #2A52BE;
+}
+
+/* --- Deal Room Specific --- */
+.action-btn {
+    -fx-background-color: #A03030;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-padding: 8 20;
+    -fx-background-radius: 6;
+    -fx-cursor: hand;
+}
+
+.action-btn:hover {
+    -fx-background-color: #782424;
+}
+
+.fairness-slider .thumb {
+    -fx-background-color: #2A52BE;
+}
+
+.fairness-slider .track {
+    -fx-background-color: linear-gradient(to right, #C89F81, #E6E6FA, #2A52BE);
+    -fx-background-radius: 4;
+}

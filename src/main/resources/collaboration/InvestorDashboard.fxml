@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import java.net.URL?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.effect.*?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+
+<StackPane fx:id="rootStack" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.connexion3a8.controllers.collaboration.InvestorController">
+    <stylesheets>
+        <URL value="@styles_premium.css" />
+    </stylesheets>
+    
+    <!-- Main Content Layout -->
+    <HBox styleClass="main-container">
+        <!-- Dynamic Content Area -->
+        <VBox HBox.hgrow="ALWAYS" styleClass="content-area">
+            <HBox alignment="CENTER_LEFT" spacing="20">
+                <VBox spacing="5" HBox.hgrow="ALWAYS">
+                    <Label fx:id="pageTitle" styleClass="title-text" text="Discover Opportunities" />
+                    <Label fx:id="pageSubtitle" styleClass="subtitle-text" text="Find and analyze premium investments." />
+                </VBox>
+                <Region HBox.hgrow="ALWAYS" />
+                <Button text="🏠 Home" styleClass="nav-btn" onAction="#goHome">
+                    <tooltip><Tooltip text="Back to Home" /></tooltip>
+                </Button>
+                <Button styleClass="nav-btn" onAction="#logout">
+                    <graphic>
+                        <FontIcon iconLiteral="fth-log-out" styleClass="nav-icon" />
+                    </graphic>
+                    <tooltip><Tooltip text="Logout" /></tooltip>
+                </Button>
+            </HBox>
+
+            <VBox spacing="30" VBox.vgrow="ALWAYS">
+                <padding><javafx.geometry.Insets top="40" bottom="0" left="0" right="0"/></padding>
+                
+                <StackPane VBox.vgrow="ALWAYS">
+                    <!-- 1. Browse Page -->
+                    <VBox fx:id="browsePage" spacing="20" VBox.vgrow="ALWAYS">
+                        <!-- Filters Toolbar -->
+                        <HBox spacing="15" alignment="CENTER_LEFT">
+                            <TextField fx:id="searchField" promptText="🔎 Search projects..." style="-fx-background-radius: 20; -fx-padding: 8 15;"/>
+                            <Label text="Category:" style="-fx-font-weight: bold; -fx-text-fill: -app-primary;"/>
+                            <ComboBox fx:id="categoryFilterBox" style="-fx-background-radius: 20;"/>
+                            <Label text="Sort By:" style="-fx-font-weight: bold; -fx-text-fill: -app-primary;"/>
+                            <ComboBox fx:id="sortBox" style="-fx-background-radius: 20;"/>
+                            <Label text="Currency:" style="-fx-font-weight: bold; -fx-text-fill: -app-primary;"/>
+                            <ComboBox fx:id="currencyBox" style="-fx-background-radius: 20;"/>
+                            <Region HBox.hgrow="ALWAYS"/>
+                            <Button fx:id="btnAiAdvisor" text="🤖 Ask AI Portfolio Advisor" onAction="#askAiAdvisor" styleClass="ai-btn" />
+                            <Button text="↺ Refresh" styleClass="nav-btn" onAction="#refreshProjects"/>
+                        </HBox>
+
+                        <Label fx:id="aiAdvisorOutput" wrapText="true" minHeight="-Infinity" visible="false" managed="false" style="-fx-font-weight: bold; -fx-text-fill: #9B7E46; -fx-padding: 15; -fx-background-color: #fef9c3; -fx-background-radius: 8; -fx-border-color: #facc15; -fx-border-radius: 8; -fx-font-size: 14px; -fx-line-spacing: 5;"/>
+
+                        <ScrollPane fitToWidth="true" styleClass="scroll-pane" VBox.vgrow="ALWAYS">
+                            <FlowPane fx:id="projectsContainer" hgap="30" vgap="30" />
+                        </ScrollPane>
+                    </VBox>
+
+                    <!-- 3. Collaboration Tracking Page -->
+                    <VBox fx:id="collaborationPage" spacing="30" visible="false" managed="false" VBox.vgrow="ALWAYS">
+                        <ScrollPane fitToWidth="true" styleClass="scroll-pane" VBox.vgrow="ALWAYS">
+                            <VBox fx:id="collaborationContainer" spacing="20" />
+                        </ScrollPane>
+                    </VBox>
+                </StackPane>
+            </VBox>
+        </VBox>
+    </HBox>
+
+    <!-- Product Details Overlay (Shown when a project card is clicked) -->
+    <VBox fx:id="detailOverlay" styleClass="detail-overlay" visible="false">
+        <VBox styleClass="detail-card">
+            
+            <HBox alignment="CENTER_LEFT" spacing="15">
+                <VBox spacing="5" HBox.hgrow="ALWAYS">
+                    <Label fx:id="detailTitle" styleClass="detail-title" text="Project Title" />
+                    <HBox spacing="10" alignment="CENTER_LEFT">
+                        <Label fx:id="detailCategory" styleClass="category-badge" text="Category" />
+                        <Label fx:id="detailStatus" styleClass="category-badge" style="-fx-background-color: #64748b;" text="Status" />
+                    </HBox>
+                </VBox>
+                <Button styleClass="close-detail-btn" onAction="#hideProjectDetails">
+                    <graphic>
+                        <FontIcon iconLiteral="fth-x" styleClass="nav-icon" />
+                    </graphic>
+                </Button>
+            </HBox>
+            
+            <Separator />
+            
+            <GridPane styleClass="meta-grid">
+                <columnConstraints>
+                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                </columnConstraints>
+                
+                <VBox styleClass="meta-item" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                    <Label styleClass="meta-label" text="REQUESTED AMOUNT" />
+                    <Label fx:id="detailGoal" styleClass="meta-value" style="-fx-text-fill: -app-primary;" text="\$0.00" />
+                </VBox>
+                <VBox styleClass="meta-item" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                    <Label styleClass="meta-label" text="EQUITY OFFERED" />
+                    <Label fx:id="detailEquity" styleClass="meta-value" text="0%" />
+                </VBox>
+                <VBox styleClass="meta-item" GridPane.columnIndex="2" GridPane.rowIndex="0">
+                    <Label styleClass="meta-label" text="CREATOR ID" />
+                    <Label fx:id="detailCreator" styleClass="meta-value" text="#0" />
+                </VBox>
+            </GridPane>
+            
+            <Label text="Description:" style="-fx-font-weight: bold; -fx-text-fill: -app-muted-foreground;"/>
+            <Label fx:id="detailDesc" wrapText="true" style="-fx-font-size: 14px; -fx-text-fill: -app-card-foreground; -fx-line-spacing: 5;"/>
+            
+            <Region VBox.vgrow="ALWAYS" />
+            
+            <HBox spacing="20" alignment="CENTER_RIGHT" style="-fx-padding: 20 0 0 0; -fx-border-color: #e2e8f0; -fx-border-width: 1 0 0 0;">
+                <Button fx:id="btnAiExplain" onAction="#generateAiPdfReport" styleClass="ai-btn" text="🤖 AI Setup Explanation &amp; PDF" />
+                <Button fx:id="btnInvestNow" onAction="#investInOverlayProject" styleClass="add-btn" text="💼 Add Investment Offer" />
+                <Button fx:id="btnTrackProgress" text="Track Progress 📊" styleClass="add-btn" style="-fx-background-color: #16a34a;" />
+                <Button fx:id="btnDealRoom" text="Deal Room 🤝" styleClass="ai-btn" />
+                <Button fx:id="btnCancelOffer" text="Cancel Offer" styleClass="ai-btn" style="-fx-background-color: #A62639;" />
+            </HBox>
+            
+        </VBox>
+    </VBox>
+</StackPane>

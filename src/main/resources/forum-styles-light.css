@@ -1,0 +1,488 @@
+/* INVESTI Forum - Light Theme Override */
+/* Applied on top of styles.css when light mode is active */
+
+/* ============================================
+   Global Overrides
+   ============================================ */
+* {
+    -fx-dark-bg: #f7f9fb;
+    -fx-dark-card: #ffffff;
+    -fx-dark-border: #d0d7de;
+    -fx-text-primary: #2c3e50;
+    -fx-text-secondary: #5a6a7a;
+}
+
+/* ============================================
+   Navigation Items (Left Sidebar)
+   ============================================ */
+.nav-item {
+    -fx-text-fill: #2c3e50;
+}
+
+.nav-item:hover {
+    -fx-background-color: rgba(69, 105, 144, 0.1);
+    -fx-text-fill: #1a2530;
+}
+
+.nav-item:selected {
+    -fx-background-color: rgba(155, 126, 70, 0.1);
+    -fx-text-fill: #7a6330;
+}
+
+/* ============================================
+   Separator
+   ============================================ */
+.separator .line {
+    -fx-border-color: #d0d7de;
+    -fx-border-width: 1 0 0 0;
+}
+
+/* ============================================
+   User Selector
+   ============================================ */
+.user-selector-minimal {
+    -fx-text-fill: #5a6a7a;
+}
+
+.user-selector-minimal .list-cell {
+    -fx-background-color: #ffffff;
+    -fx-text-fill: #2c3e50;
+}
+
+.user-selector-minimal .list-view {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #d0d7de;
+}
+
+.user-selector-minimal .list-view .list-cell:hover {
+    -fx-background-color: #e8f0fe;
+}
+
+/* ============================================
+   Category Combo
+   ============================================ */
+.category-combo {
+    -fx-background-color: #ffffff;
+    -fx-text-fill: #2c3e50;
+    -fx-border-color: #d0d7de;
+}
+
+.category-combo .list-cell {
+    -fx-background-color: #ffffff;
+    -fx-text-fill: #2c3e50;
+}
+
+.category-combo .arrow-button {
+    -fx-background-color: transparent;
+}
+
+.category-combo .arrow-button .arrow {
+    -fx-background-color: #5a6a7a;
+}
+
+.category-combo-popup .list-view {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #d0d7de;
+}
+
+.category-combo-popup .list-view .list-cell {
+    -fx-background-color: #ffffff;
+    -fx-text-fill: #2c3e50;
+}
+
+.category-combo-popup .list-view .list-cell:hover {
+    -fx-background-color: #e8f0fe;
+}
+
+/* ============================================
+   ComboBox Generic (for dialogs)
+   ============================================ */
+.combo-box .list-cell {
+    -fx-text-fill: #2c3e50;
+}
+
+.combo-box-popup .list-view {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #d0d7de;
+    -fx-background-radius: 8;
+}
+
+.combo-box-popup .list-view .list-cell {
+    -fx-background-color: #ffffff;
+    -fx-text-fill: #2c3e50;
+    -fx-padding: 8 12;
+}
+
+.combo-box-popup .list-view .list-cell:hover {
+    -fx-background-color: #e8f0fe;
+}
+
+.combo-box-popup .list-view .list-cell:filled:selected {
+    -fx-background-color: #d0e0f0;
+    -fx-text-fill: #2c3e50;
+}
+
+/* ============================================
+   Search Field
+   ============================================ */
+.search-field-modern {
+    -fx-background-color: #f0f2f5;
+    -fx-text-fill: #2c3e50;
+    -fx-prompt-text-fill: #8899a6;
+    -fx-border-color: #d0d7de;
+    -fx-control-inner-background: #f0f2f5;
+}
+
+.search-field-modern:focused {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #456990;
+    -fx-control-inner-background: #ffffff;
+}
+
+/* ============================================
+   Compose Box
+   ============================================ */
+.compose-box {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #d0d7de;
+}
+
+.compose-textarea {
+    -fx-background-color: #f0f2f5;
+    -fx-text-fill: #2c3e50;
+    -fx-prompt-text-fill: #8899a6;
+    -fx-border-color: #d0d7de;
+    -fx-control-inner-background: #f0f2f5;
+}
+
+.compose-textarea .content {
+    -fx-background-color: #f0f2f5;
+}
+
+.compose-textarea .scroll-pane {
+    -fx-background-color: #f0f2f5;
+}
+
+.compose-textarea .scroll-pane .viewport {
+    -fx-background-color: #f0f2f5;
+}
+
+.compose-textarea:focused {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #456990;
+    -fx-control-inner-background: #ffffff;
+}
+
+/* ============================================
+   Feed Scroll
+   ============================================ */
+.feed-scroll {
+    -fx-background: #f7f9fb;
+    -fx-background-color: #f7f9fb;
+}
+
+.feed-scroll .viewport {
+    -fx-background-color: #f7f9fb;
+}
+
+.feed-scroll .scroll-bar:vertical .thumb {
+    -fx-background-color: rgba(69, 105, 144, 0.3);
+}
+
+.feed-scroll .scroll-bar:vertical .thumb:hover {
+    -fx-background-color: rgba(69, 105, 144, 0.5);
+}
+
+/* ============================================
+   Post Card
+   ============================================ */
+.post-card {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #e1e5ea;
+}
+
+.post-card:hover {
+    -fx-background-color: #f7f9fb;
+}
+
+/* ============================================
+   Trends Card
+   ============================================ */
+.trends-card {
+    -fx-background-color: #f0f2f5;
+}
+
+/* ============================================
+   Icon Buttons (all variants)
+   ============================================ */
+.icon-btn {
+    -fx-text-fill: #4a5568;
+}
+
+.icon-btn .arrow-button .arrow {
+    -fx-background-color: #4a5568;
+}
+
+.icon-btn:hover {
+    -fx-background-color: rgba(69, 105, 144, 0.08);
+    -fx-text-fill: #456990;
+}
+
+.icon-btn-upvote {
+    -fx-text-fill: #4a5568;
+}
+
+.icon-btn-upvote:hover {
+    -fx-background-color: rgba(155, 126, 70, 0.1);
+    -fx-text-fill: #7a6330;
+}
+
+.icon-btn-upvote-active {
+    -fx-text-fill: #7a6330;
+}
+
+.icon-btn-downvote {
+    -fx-text-fill: #4a5568;
+}
+
+.icon-btn-downvote:hover {
+    -fx-background-color: rgba(166, 38, 57, 0.1);
+    -fx-text-fill: #8a1e30;
+}
+
+.icon-btn-downvote-active {
+    -fx-text-fill: #8a1e30;
+}
+
+.icon-btn-edit {
+    -fx-text-fill: #4a5568;
+}
+
+.icon-btn-edit:hover {
+    -fx-text-fill: #3a5f85;
+}
+
+.icon-btn-delete {
+    -fx-text-fill: #4a5568;
+}
+
+.icon-btn-delete:hover {
+    -fx-text-fill: #8a1e30;
+}
+
+.icon-btn-translate {
+    -fx-text-fill: #4a5568;
+}
+
+.icon-btn-translate .arrow-button .arrow {
+    -fx-background-color: #4a5568;
+}
+
+.icon-btn-translate:hover {
+    -fx-text-fill: #3a5f85;
+}
+
+.icon-btn-comment {
+    -fx-text-fill: #4a5568;
+}
+
+.icon-btn-reply {
+    -fx-text-fill: #4a5568;
+}
+
+/* ============================================
+   MenuButton Popup (Translate / Share dropdowns)
+   ============================================ */
+.menu-button .context-menu {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #d0d7de;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.12), 8, 0, 0, 2);
+}
+
+.menu-button .context-menu .menu-item {
+    -fx-background-color: transparent;
+}
+
+.menu-button .context-menu .menu-item .label {
+    -fx-text-fill: #2c3e50;
+}
+
+.menu-button .context-menu .menu-item:hover {
+    -fx-background-color: #e8f0fe;
+}
+
+.menu-button .context-menu .menu-item:focused {
+    -fx-background-color: #e8f0fe;
+}
+
+/* ============================================
+   Context Menu (general)
+   ============================================ */
+.context-menu {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #d0d7de;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.12), 8, 0, 0, 2);
+}
+
+.context-menu .menu-item {
+    -fx-background-color: transparent;
+}
+
+.context-menu .menu-item .label {
+    -fx-text-fill: #2c3e50;
+}
+
+.context-menu .menu-item:hover {
+    -fx-background-color: #e8f0fe;
+}
+
+.context-menu .menu-item:focused {
+    -fx-background-color: #e8f0fe;
+}
+
+/* ============================================
+   Action Buttons (Legacy)
+   ============================================ */
+.action-btn {
+    -fx-text-fill: #4a5568;
+}
+
+.action-btn:hover {
+    -fx-background-color: rgba(69, 105, 144, 0.08);
+    -fx-text-fill: #456990;
+}
+
+/* ============================================
+   Text Input Fields
+   ============================================ */
+.text-input-dark {
+    -fx-background-color: #f0f2f5;
+    -fx-text-fill: #2c3e50;
+    -fx-prompt-text-fill: #8899a6;
+    -fx-border-color: #d0d7de;
+    -fx-control-inner-background: #f0f2f5;
+}
+
+.text-input-dark:focused {
+    -fx-border-color: #456990;
+    -fx-background-color: #ffffff;
+    -fx-control-inner-background: #ffffff;
+}
+
+.text-area-dark {
+    -fx-background-color: #f0f2f5;
+    -fx-text-fill: #2c3e50;
+    -fx-prompt-text-fill: #8899a6;
+    -fx-border-color: #d0d7de;
+    -fx-control-inner-background: #f0f2f5;
+}
+
+.text-area-dark .content {
+    -fx-background-color: #f0f2f5;
+}
+
+.text-area-dark:focused {
+    -fx-border-color: #456990;
+    -fx-background-color: #ffffff;
+    -fx-control-inner-background: #ffffff;
+}
+
+.text-area-dark:focused .content {
+    -fx-background-color: #ffffff;
+}
+
+.text-area-dark .scroll-pane {
+    -fx-background-color: #f0f2f5;
+}
+
+.text-area-dark .scroll-pane .viewport {
+    -fx-background-color: #f0f2f5;
+}
+
+.text-area-dark .scroll-pane .content {
+    -fx-background-color: #f0f2f5;
+}
+
+/* ============================================
+   Comment Card
+   ============================================ */
+.comment-card {
+    -fx-border-color: #e1e5ea;
+}
+
+.comment-reply {
+    -fx-border-color: #456990;
+}
+
+/* ============================================
+   Buttons
+   ============================================ */
+.btn-secondary {
+    -fx-text-fill: #2c3e50;
+    -fx-border-color: #456990;
+}
+
+.btn-secondary:hover {
+    -fx-background-color: rgba(69, 105, 144, 0.08);
+    -fx-text-fill: #1a2530;
+}
+
+/* ============================================
+   Scrollbar Global
+   ============================================ */
+.scroll-pane {
+    -fx-background-color: transparent;
+}
+
+.scroll-pane .viewport {
+    -fx-background-color: transparent;
+}
+
+.scroll-bar .thumb {
+    -fx-background-color: rgba(69, 105, 144, 0.25);
+}
+
+.scroll-bar .thumb:hover {
+    -fx-background-color: rgba(69, 105, 144, 0.45);
+}
+
+/* ============================================
+   Tooltip
+   ============================================ */
+.tooltip {
+    -fx-background-color: #ffffff;
+    -fx-text-fill: #2c3e50;
+    -fx-border-color: #d0d7de;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.15), 8, 0, 0, 2);
+}
+
+/* ============================================
+   Alert / Dialog Pane
+   ============================================ */
+.dialog-pane {
+    -fx-background-color: #ffffff;
+}
+
+.dialog-pane .content {
+    -fx-text-fill: #2c3e50;
+}
+
+.dialog-pane .header-panel {
+    -fx-background-color: #f0f2f5;
+}
+
+.dialog-pane .header-panel .label {
+    -fx-text-fill: #2c3e50;
+}
+
+.dialog-pane .content .label {
+    -fx-text-fill: #2c3e50;
+}
+
+.dialog-pane .button-bar .btn {
+    -fx-text-fill: #2c3e50;
+}

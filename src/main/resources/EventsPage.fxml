@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+            fx:controller="edu.connexion3a8.controllers.EventsPageController"
+            style="-fx-background-color: #F7F0F5;" stylesheets="@styles.css">
+
+    <top>
+        <HBox alignment="CENTER_LEFT" spacing="20" styleClass="header-bar" style="-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 15, 0, 0, 3);">
+            <ImageView fitWidth="50" fitHeight="50" preserveRatio="true">
+                <Image url="@INVESTI.png"/>
+            </ImageView>
+            <Label text="INVESTI - Events" styleClass="header-logo"/>
+            <Region HBox.hgrow="ALWAYS"/>
+            <Button text="🏠 Home" onAction="#handleBack" styleClass="modern-button, button-primary"/>
+        </HBox>
+    </top>
+
+    <center>
+        <ScrollPane fitToWidth="true" styleClass="scroll-pane" style="-fx-background: #F7F0F5; -fx-background-color: #F7F0F5;">
+            <VBox spacing="25" style="-fx-background-color: #F7F0F5;">
+                <padding>
+                    <Insets top="30" right="40" bottom="30" left="40"/>
+                </padding>
+
+                <VBox spacing="15" styleClass="modern-card">
+                    <Label text="📅 Upcoming Events" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #000501;"/>
+                    <Label fx:id="userStatusLabel" text="" wrapText="true"/>
+                    
+                    <HBox spacing="15" alignment="CENTER_LEFT">
+                        <TextField fx:id="searchField" promptText="🔍 Search events by title, location, or mentor..." 
+                                   styleClass="modern-input" HBox.hgrow="ALWAYS" onKeyReleased="#handleSearch"/>
+                    </HBox>
+                </VBox>
+
+                <VBox fx:id="eventsContainer" spacing="20"/>
+            </VBox>
+        </ScrollPane>
+    </center>
+</BorderPane>
